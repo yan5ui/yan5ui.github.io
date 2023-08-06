@@ -1,611 +1,548 @@
-Stun.utils = Stun.$u = {
-  /**
-   * Debounce
-   * @param {Object} func Callback function
-   * @param {Number} wait Waiting time
-   * @param {Boolean} immediate Run immediately
-   */
-  debounce: function (func, wait, immediate) {
-    var timeout
-    return function () {
-      var context = this
-      var args = arguments
+/* global function */
 
-      if (timeout) clearTimeout(timeout)
-      if (immediate) {
-        var callNow = !timeout
-        timeout = setTimeout(function () {
-          timeout = null
-        }, wait)
-        if (callNow) func.apply(context, args)
+Global.initUtils = () => {
+  Global.utils = {
+    html_root_dom: document.querySelector("html"),
+    pageContainer_dom: document.querySelector(".page-container"),
+    pageTop_dom: document.querySelector(".main-content-header"),
+    homeBanner_dom: document.querySelector(".home-banner-container"),
+    scrollProgressBar_dom: document.querySelector(".scroll-progress-bar"),
+    pjaxProgressBar_dom: document.querySelector(".pjax-progress-bar"),
+    pjaxProgressIcon_dom: document.querySelector(".swup-progress-icon"),
+    backToTopButton_dom: document.querySelector(".tool-scroll-to-top"),
+    toolsList: document.querySelector(".hidden-tools-list"),
+    toggleButton: document.querySelector(".toggle-tools-list"),
+
+    innerHeight: window.innerHeight,
+    pjaxProgressBarTimer: null,
+    prevScrollValue: 0,
+    fontSizeLevel: 0,
+
+    isHasScrollProgressBar:
+      Global.theme_config.global.scroll_progress.bar === true,
+    isHasScrollPercent:
+      Global.theme_config.global.scroll_progress.percentage === true,
+
+    // Scroll Style
+    updateScrollStyle() {
+      const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+      const scrollHeight = document.documentElement.scrollHeight;
+      const clientHeight = window.innerHeight || document.documentElement.clientHeight;
+      const percent = this.calculatePercentage(scrollTop, scrollHeight, clientHeight);
+    
+      this.updateScrollProgressBar(percent);
+      this.updateScrollPercent(percent);
+      this.updatePageTopVisibility(scrollTop, clientHeight);
+      
+      this.prevScrollValue = scrollTop;
+    },
+
+    calculatePercentage(scrollTop, scrollHeight, clientHeight) {
+      return Math.round((scrollTop / (scrollHeight - clientHeight)) * 100);
+    },
+
+    
+    updateScrollProgressBar(percent) {
+      if (this.isHasScrollProgressBar) {
+        const progressPercent = percent.toFixed(3);
+        const visibility = percent === 0 ? 'hidden' : 'visible';
+    
+        this.scrollProgressBar_dom.style.visibility = visibility;
+        this.scrollProgressBar_dom.style.width = `${progressPercent}%`;
+      }
+    },
+    
+    updateScrollPercent(percent) {
+      if (this.isHasScrollPercent) {
+        const percentDom = this.backToTopButton_dom.querySelector('.percent');
+        const showButton = percent !== 0 && percent !== undefined;
+    
+        this.backToTopButton_dom.classList.toggle('show', showButton);
+        percentDom.innerHTML = percent.toFixed(0);
+      }
+    },
+    
+    updatePageTopVisibility(scrollTop, clientHeight) {
+      if (Global.theme_config.navbar.auto_hide) {
+        const prevScrollValue = this.prevScrollValue;
+        const hidePageTop = prevScrollValue > clientHeight && scrollTop > prevScrollValue;
+    
+        this.pageTop_dom.classList.toggle('hide', hidePageTop);
       } else {
-        timeout = setTimeout(function () {
-          func.apply(context, args)
-        }, wait)
+        this.pageTop_dom.classList.remove('hide');
       }
-    }
-  },
-  /**
-   * Throttle
-   * @param {Object} func Callback function
-   * @param {Number} wait Waiting time
-   * @param {Object} options leading: Boolean, trailing: Boolean
-   */
-  throttle: function (func, wait, options) {
-    var timeout, context, args
-    var previous = 0
-    if (!options) options = {}
+    },
+    
+    calculatePercentage(scrollTop, scrollHeight, clientHeight) {
+      return Math.round((scrollTop / (scrollHeight - clientHeight)) * 100);
+    },
 
-    var later = function () {
-      previous = options.leading === false ? 0 : new Date().getTime()
-      timeout = null
-      func.apply(context, args)
-      if (!timeout) context = args = null
-    }
-    var throttled = function () {
-      var now = new Date().getTime()
-      if (!previous && options.leading === false) previous = now
-      var remaining = wait - (now - previous)
-      context = this
-      args = arguments
-      if (remaining <= 0 || remaining > wait) {
-        if (timeout) {
-          clearTimeout(timeout)
-          timeout = null
-        }
-        previous = now
-        func.apply(context, args)
-        if (!timeout) context = args = null
-      } else if (!timeout && options.trailing !== false) {
-        timeout = setTimeout(later, remaining)
+    // register window scroll event
+    registerWindowScroll() {
+      window.addEventListener("scroll", () => {
+        this.updateScrollStyle();
+        this.updateTOCScroll();
+        this.updateNavbarShrink();
+        this.updateHomeBannerBlur();
+        this.updateAutoHideTools();
+        this.updateAPlayerAutoHide();
+      });
+    },
+    
+    updateTOCScroll() {
+      if (Global.theme_config.articles.toc.enable && Global.utils.hasOwnProperty("updateActiveTOCLink")) {
+        Global.utils.updateActiveTOCLink();
       }
-    }
-    return throttled
-  },
-  hasMobileUA: function () {
-    var nav = window.navigator
-    var ua = nav.userAgent
-    var pa = /iPad|iPhone|Android|Opera Mini|BlackBerry|webOS|UCWEB|Blazer|PSP|IEMobile|Symbian/g
-    return pa.test(ua)
-  },
-  isTablet: function () {
-    return (
-      window.screen.width > 767 &&
-      window.screen.width < 992 &&
-      this.hasMobileUA()
-    )
-  },
-  isMobile: function () {
-    return window.screen.width < 767 && this.hasMobileUA()
-  },
-  isDesktop: function () {
-    return !this.isTablet() && !this.isMobile()
-  },
-  Cookies: function () {
-    function extend () {
-      var i = 0
-      var result = {}
-      for (; i < arguments.length; i++) {
-        var attributes = arguments[i]
-        for (var key in attributes) {
-          result[key] = attributes[key]
-        }
+    },
+    
+    updateNavbarShrink() {
+      navbarShrink.init();
+    },
+    
+    updateHomeBannerBlur() {
+      if (Global.theme_config.home_banner.style === "fixed" && location.pathname === Global.hexo_config.root) {
+        const blurElement = document.querySelector(".home-banner-background");
+        const viewHeight = window.innerHeight;
+        const scrollY = window.scrollY || window.pageYOffset;
+        const triggerViewHeight = viewHeight / 2;
+        const blurValue = scrollY >= triggerViewHeight ? 15 : 0;
+    
+        try {
+          blurElement.style.transition = "0.3s";
+          blurElement.style.webkitFilter = `blur(${blurValue}px)`;
+        } catch (e) {}
       }
-      return result
-    }
-
-    function init (converter) {
-      function api (key, value, attributes) {
-        var result
-        if (typeof document === 'undefined') {
-          return
-        }
-        // Write
-        if (arguments.length > 1) {
-          attributes = extend({ path: '/' }, api.defaults, attributes)
-          if (typeof attributes.expires === 'number') {
-            var expires = new Date()
-            expires.setMilliseconds(
-              expires.getMilliseconds() + attributes.expires * 864e5
-            )
-            attributes.expires = expires
-          }
-          // We're using "expires" because "max-age" is not supported by IE
-          attributes.expires = attributes.expires
-            ? attributes.expires.toUTCString()
-            : ''
-          try {
-            result = JSON.stringify(value)
-            if (/^[{[]/.test(result)) {
-              value = result
-            }
-          } catch (e) {
-            /* empty */
-          }
-          if (!converter.write) {
-            value = encodeURIComponent(String(value)).replace(
-              /%(23|24|26|2B|3A|3C|3E|3D|2F|3F|40|5B|5D|5E|60|7B|7D|7C)/g,
-              decodeURIComponent
-            )
+    },
+    
+    updateAutoHideTools() {
+      const y = window.pageYOffset;
+      const height = document.body.scrollHeight;
+      const windowHeight = window.innerHeight;
+      const toolList = document.getElementsByClassName('right-side-tools-container');
+    
+      for (let i = 0; i < toolList.length; i++) {
+        const tools = toolList[i];
+        if (y <= 0) {
+          if (location.pathname !== '/') {
+            //console.log(location.pathname)
           } else {
-            value = converter.write(value, key)
+            tools.classList.add('hide');
           }
-          key = encodeURIComponent(String(key))
-          key = key.replace(/%(23|24|26|2B|5E|60|7C)/g, decodeURIComponent)
-          key = key.replace(/[()]/g, escape)
-
-          var stringifiedAttributes = ''
-          for (var attributeName in attributes) {
-            if (!attributes[attributeName]) {
-              continue
-            }
-            stringifiedAttributes += '; ' + attributeName
-            if (attributes[attributeName] === true) {
-              continue
-            }
-            stringifiedAttributes += '=' + attributes[attributeName]
-          }
-          return (document.cookie = key + '=' + value + stringifiedAttributes)
+        } else if (y + windowHeight >= height - 20) {
+          tools.classList.add('hide');
+        } else {
+          tools.classList.remove('hide');
         }
-        // Read
-        if (!key) {
-          result = {}
-        }
-        // To prevent the for loop in the first place assign an empty array
-        // in case there are no cookies at all. Also prevents odd result when
-        // calling "get()"
-        var cookies = document.cookie ? document.cookie.split('; ') : []
-        var rdecode = /(%[0-9A-Z]{2})+/g
-        var i = 0
-
-        for (; i < cookies.length; i++) {
-          var parts = cookies[i].split('=')
-          var cookie = parts.slice(1).join('=')
-
-          if (cookie.charAt(0) === '"') {
-            cookie = cookie.slice(1, -1)
-          }
-          try {
-            var name = parts[0].replace(rdecode, decodeURIComponent)
-            cookie = converter.read
-              ? converter.read(cookie, name)
-              : converter(cookie, name) ||
-                cookie.replace(rdecode, decodeURIComponent)
-            if (this.json) {
-              try {
-                cookie = JSON.parse(cookie)
-              } catch (e) {
-                /* empty */
-              }
-            }
-            if (key === name) {
-              result = cookie
-              break
-            }
-            if (!key) {
-              result[name] = cookie
-            }
-          } catch (e) {
-            /* empty */
-          }
-        }
-        return result
       }
-      api.set = api
-      api.get = function (key) {
-        return api.call(api, key)
-      }
-      api.getJSON = function () {
-        return api.apply({ json: true }, [].slice.call(arguments))
-      }
-      api.defaults = {}
-      api.remove = function (key, attributes) {
-        api(key, '', extend(attributes, { expires: -1 }))
-      }
-      api.withConverter = init
-      return api
-    }
-    return init(function () {})
-  },
-  showThemeInConsole: function () {
-    var stunInfo = '主题不错？⭐star 支持一下 ->'
-    var stunURL = 'https://github.com/liuyib/hexo-theme-stun'
-    var stunNameStr =
-      '\n\n      ___          ___            ___            ___      \n     /\\  \\        /\\  \\          /\\__\\          /\\__\\     \n    /::\\  \\       \\:\\  \\        /:/  /         /::|  |    \n   /:/\\ \\  \\       \\:\\  \\      /:/  /         /:|:|  |    \n  _\\:\\ \\ \\  \\      /::\\  \\    /:/  /  ___    /:/|:|  |__  \n /\\ \\:\\ \\ \\__\\    /:/\\:\\__\\  /:/__/  /\\__\\  /:/ |:| /\\__\\ \n \\:\\ \\:\\ \\/__/   /:/  \\/__/  \\:\\  \\ /:/  /  \\/__|:|/:/  / \n  \\:\\ \\:\\__\\    /:/  /        \\:\\  /:/  /       |:/:/  /  \n   \\:\\/:/  /    \\/__/          \\:\\/:/  /        |::/  /   \n    \\::/  /                     \\::/  /         /:/  /    \n     \\/__/                       \\/__/          \\/__/     \n                                                          \n'
-    var stunInfoStyle =
-      'background-color: #49b1f5; color: #fff; padding: 8px; font-size: 14px;'
-    var stunURLStyle =
-      'background-color: #ffbca2; padding: 8px; font-size: 14px;'
-    var stunNameStyle = 'background-color: #eaf8ff;'
-
-    console.log(
-      '%c%s%c%s%c%s',
-      stunInfoStyle,
-      stunInfo,
-      stunURLStyle,
-      stunURL,
-      stunNameStyle,
-      stunNameStr
-    )
-  },
-  /**
-   * Change the event code to keyCode.
-   * @param {String} code Event code
-   */
-  codeToKeyCode: function (code) {
-    var codes = {
-      ArrowLeft: 37,
-      ArrowRight: 39,
-      Escape: 27,
-      Enter: 13
-    }
-    return codes[code]
-  },
-  /**
-   * "Alert" component
-   * @param {String} status The Status of message. Values: success / info / warning / error.
-   * @param {String} text The text to show.
-   * @param {Number} delay Message stay time (unit is 's', default 5s).
-   */
-  popAlert: function (status, text, delay) {
-    if ($('.stun-message').length !== 0) {
-      $('.stun-message').remove()
-    }
-
-    var $alert = $(
-      '<div class="stun-message">' +
-        `<div class="stun-alert stun-alert-${status}">` +
-        `<i class="stun-alert-icon ${CONFIG.fontIcon.prompt[status]}"></i>` +
-        `<span class="stun-alert-description">${text}</span>` +
-        '</div>' +
-        '</div>'
-    )
-
-    $('body').append($alert)
-    $(document).ready(function () {
-      $('.stun-alert')
-        .velocity('stop')
-        .velocity('transition.slideDownBigIn', {
-          duration: 300
-        })
-        .velocity('reverse', {
-          delay: delay * 1000 || 5000,
-          duration: 260,
-          complete: function () {
-            $('.stun-alert').css('display', 'none')
-          }
-        })
-    })
-  },
-  /**
-   * Copy any text.
-   * @param {HTMLElement} container Container of text.
-   */
-  copyText: function (container) {
-    try {
-      var selection = window.getSelection()
-      var range = document.createRange()
-      // Select text by the content of node.
-      range.selectNodeContents(container)
-      selection.removeAllRanges()
-      selection.addRange(range)
-
-      var text = selection.toString()
-      var input = document.createElement('input')
-      // Create a temporary input to make the
-      // execCommand command take effect.
-      input.style.display = 'none'
-      input.setAttribute('readonly', 'readonly')
-      input.setAttribute('value', text)
-      document.body.appendChild(input)
-      input.setSelectionRange(0, -1)
-
-      if (document.execCommand('copy')) {
-        document.execCommand('copy')
-        document.body.removeChild(input)
-        return true
-      }
-      document.body.removeChild(input)
-    } catch (e) {
-      return false
-    }
-  },
-  // Wrap images with fancybox support.
-  wrapImageWithFancyBox: function () {
-    $('.content img')
-      .not(':hidden')
-      .each(function () {
-        var $img = $(this)
-        var imgTitle = $img.attr('title') || $img.attr('alt')
-        var $imgWrap = $img.parent('a')
-        var imgSource = ['data-src', 'data-original', 'src']
-        var imgSrc = ''
-
-        if (!$imgWrap[0]) {
-          for (var i = 0; i < imgSource.length; i++) {
-            if ($img.attr(imgSource[i])) {
-              imgSrc = $img.attr(imgSource[i])
-              break
-            }
-          }
-          $imgWrap = $img
-            .wrap(`<a class="fancybox" href="${imgSrc}"></a>`)
-            .parent('a')
-          if ($img.is('.gallery img')) {
-            $imgWrap.attr('data-fancybox', 'gallery')
+    },
+    
+    updateAPlayerAutoHide() {
+      const aplayer = document.getElementById('aplayer');
+      if (aplayer == null) {} else {
+        const y = window.pageYOffset;
+        const height = document.body.scrollHeight;
+        const windowHeight = window.innerHeight;
+        if (y <= 0) {
+          if (location.pathname !== '/') {
+            //console.log(location.pathname)
           } else {
-            $imgWrap.attr('data-fancybox', 'default')
+            aplayer.classList.add('hide');
           }
-        }
-        if (imgTitle) {
-          $imgWrap.attr('title', imgTitle).attr('data-caption', imgTitle)
-        }
-      })
-
-    $().fancybox({
-      selector: '[data-fancybox]',
-      loop: true,
-      transitionEffect: 'slide',
-      hash: false,
-      buttons: [
-        'share',
-        'slideShow',
-        'fullScreen',
-        'download',
-        'thumbs',
-        'close'
-      ]
-    })
-  },
-  // Display the image in the gallery as a waterfall.
-  showImageToWaterfall: function () {
-    var gConfig = CONFIG.galleryWaterfall
-    var colWidth = parseInt(gConfig.colWidth)
-    var colGapX = parseInt(gConfig.gapX)
-    var GALLERY_IMG_SELECTOR = '.gallery img'
-
-    this.waitAllImageLoad(GALLERY_IMG_SELECTOR, function () {
-      $('.gallery').masonry({
-        itemSelector: GALLERY_IMG_SELECTOR,
-        columnWidth: colWidth,
-        percentPosition: true,
-        gutter: colGapX,
-        transitionDuration: 0
-      })
-    })
-  },
-  // Lazy load the images of post.
-  lazyLoadImage: function () {
-    $('img.lazyload').lazyload()
-  },
-  // Add a mark icon to the link with `target="_blank"` attribute.
-  addIconToExternalLink: function (container) {
-    if (!$(container)[0]) {
-      return
-    }
-
-    var $wrapper = $('<span class="exturl"></span>')
-    var $icon = $(
-      '<span class="exturl__icon">' +
-        `<i class="${CONFIG.externalLink.icon.name}"></i>` +
-        '</span>'
-    )
-
-    $(container)
-      .find('a[target="_blank"]')
-      .addClass('exturl__link')
-      .wrap($wrapper)
-      .parent('.exturl')
-      .append($icon)
-  },
-  // Switch to the prev / next post by shortcuts.
-  registerSwitchPost: function () {
-    var keyLeft = this.codeToKeyCode('ArrowLeft')
-    var keyRight = this.codeToKeyCode('ArrowRight')
-
-    $(document).on('keydown', function (e) {
-      var isPrev = e.keyCode === keyLeft
-      var isNext = e.keyCode === keyRight
-
-      if (e.ctrlKey) {
-        if (isPrev) {
-          var prevElem = $('.paginator-prev a')[0]
-          prevElem && prevElem.click()
-        } else if (isNext) {
-          var nextElem = $('.paginator-next a')[0]
-          nextElem && nextElem.click()
+        } else if (y + windowHeight >= height - 20) {
+          aplayer.classList.add('hide');
+        } else {
+          aplayer.classList.remove('hide');
         }
       }
-    })
-  },
-  // Show / Hide the reward QR.
-  registerShowReward: function () {
-    $('.reward-button').on('click', function () {
-      var $container = $('.reward-qrcode')
-      if ($container.is(':visible')) {
-        $container.css('display', 'none')
+    },
+
+    toggleToolsList() {
+      this.toggleButton.addEventListener("click", () => {
+        this.toolsList.classList.toggle("show");
+      });
+    },
+    
+    globalFontSizeAdjust() {
+      const htmlRoot = this.html_root_dom;
+      const fontAdjustPlus = document.querySelector('.tool-font-adjust-plus');
+      const fontAdjustMinus = document.querySelector('.tool-font-adjust-minus');
+    
+      const fontSize = document.defaultView.getComputedStyle(document.body).fontSize;
+      const baseFontSize = parseFloat(fontSize);
+    
+      let fontSizeLevel = 0;
+      const styleStatus = Global.getStyleStatus();
+      if (styleStatus) {
+        fontSizeLevel = styleStatus.fontSizeLevel;
+        setFontSize(fontSizeLevel);
+      }
+    
+      function setFontSize(level) {
+        const fontSize = baseFontSize * (1 + level * 0.05);
+        htmlRoot.style.fontSize = `${fontSize}px`;
+        Global.styleStatus.fontSizeLevel = level;
+        Global.setStyleStatus();
+      }
+    
+      function increaseFontSize() {
+        fontSizeLevel = Math.min(fontSizeLevel + 1, 5);
+        setFontSize(fontSizeLevel);
+      }
+    
+      function decreaseFontSize() {
+        fontSizeLevel = Math.max(fontSizeLevel - 1, 0);
+        setFontSize(fontSizeLevel);
+      }
+    
+      fontAdjustPlus.addEventListener('click', increaseFontSize);
+      fontAdjustMinus.addEventListener('click', decreaseFontSize);
+    },
+
+    // toggle content area width
+    contentAreaWidthAdjust() {
+      const toolExpandDom = document.querySelector(".tool-expand-width");
+      const navbarContentDom = document.querySelector(".navbar-content");
+      const mainContentDom = document.querySelector(".main-content");
+      const iconDom = toolExpandDom.querySelector("i");
+
+      const defaultMaxWidth =
+        Global.theme_config.global.content_max_width || "1000px";
+      const expandMaxWidth = "90%";
+      let navbarMaxWidth = defaultMaxWidth;
+
+      let isExpand = false;
+
+      if (
+        Global.theme_config.home_banner.enable === true &&
+        window.location.pathname === "/"
+      ) {
+        navbarMaxWidth = parseInt(defaultMaxWidth) * 1.2 + "px";
+      }
+
+      const setPageWidth = (isExpand) => {
+        Global.styleStatus.isExpandPageWidth = isExpand;
+        Global.setStyleStatus();
+        if (isExpand) {
+          iconDom.classList.remove("fa-expand");
+          iconDom.classList.add("fa-compress");
+          navbarContentDom.style.maxWidth = expandMaxWidth;
+          mainContentDom.style.maxWidth = expandMaxWidth;
+        } else {
+          iconDom.classList.remove("fa-compress");
+          iconDom.classList.add("fa-expand");
+          navbarContentDom.style.maxWidth = navbarMaxWidth;
+          mainContentDom.style.maxWidth = defaultMaxWidth;
+        }
+      };
+
+      const initPageWidth = () => {
+        const styleStatus = Global.getStyleStatus();
+        if (styleStatus) {
+          isExpand = styleStatus.isExpandPageWidth;
+          setPageWidth(isExpand);
+        }
+      };
+
+      initPageWidth();
+
+      toolExpandDom.addEventListener("click", () => {
+        isExpand = !isExpand;
+        setPageWidth(isExpand);
+
+        var loadingPlaceholder = document.querySelector(".loading-placeholder");
+        var masonryContainer = document.querySelector("#masonry-container");
+        if (!loadingPlaceholder || !masonryContainer) return;
+
+        loadingPlaceholder.style.opacity = 1;
+        loadingPlaceholder.style.display = "block";
+        masonryContainer.style.display = "none";
+        
+        setTimeout(() => {
+          Global.initMasonry();
+        }, 300);
+      });
+    },
+
+    // go comment anchor
+    goComment() {
+      this.goComment_dom = document.querySelector(".go-comment");
+      if (this.goComment_dom) {
+        this.goComment_dom.addEventListener("click", () => {
+          const target = document.querySelector("#comment-anchor");
+          const offset = target.getBoundingClientRect().top + window.scrollY;
+          window.anime({
+            targets: document.scrollingElement,
+            duration: 500,
+            easing: 'linear',
+            scrollTop: offset - 10
+          });
+        });
+      }
+    },
+
+    // get dom element height
+    getElementHeight(selectors) {
+      const dom = document.querySelector(selectors);
+      return dom ? dom.getBoundingClientRect().height : 0;
+    },
+
+    // init first screen height
+    inithomeBannerHeight() {
+      this.homeBanner_dom &&
+        (this.homeBanner_dom.style.height = this.innerHeight + "px");
+    },
+
+    // init page height handle
+    initPageHeightHandle() {
+      if (this.homeBanner_dom) return;
+      const temp_h1 = this.getElementHeight(".main-content-header");
+      const temp_h2 = this.getElementHeight(".main-content-body");
+      const temp_h3 = this.getElementHeight(".main-content-footer");
+      const allDomHeight = temp_h1 + temp_h2 + temp_h3;
+      const innerHeight = window.innerHeight;
+      const pb_dom = document.querySelector(".main-content-footer");
+      if (allDomHeight < innerHeight) {
+        const marginTopValue = Math.floor(innerHeight - allDomHeight);
+        if (marginTopValue > 0) {
+          pb_dom.style.marginTop = `${marginTopValue - 2}px`;
+        }
+      }
+    },
+
+    // big image viewer
+    imageViewer() {
+      let isBigImage = false;
+
+      const showHandle = (maskDom, isShow) => {
+        document.body.style.overflow = isShow ? "hidden" : "auto";
+        if (isShow) {
+          maskDom.classList.add("active");
+        } else {
+          maskDom.classList.remove("active");
+        }
+      };
+
+      const imageViewerDom = document.querySelector(".image-viewer-container");
+      const targetImg = document.querySelector(".image-viewer-container img");
+      imageViewerDom &&
+        imageViewerDom.addEventListener("click", () => {
+          isBigImage = false;
+          showHandle(imageViewerDom, isBigImage);
+        });
+
+      const imgDoms = document.querySelectorAll(".markdown-body img, .masonry-item img");
+
+      if (imgDoms.length) {
+        imgDoms.forEach((img) => {
+          img.addEventListener("click", () => {
+            isBigImage = true;
+            showHandle(imageViewerDom, isBigImage);
+            targetImg.setAttribute("src", img.getAttribute("src"));
+          });
+        });
       } else {
-        $container.velocity('stop').velocity('transition.slideDownIn', {
-          duration: 300
-        })
+        this.pageContainer_dom.removeChild(imageViewerDom);
       }
-    })
-  },
-  // Click to zoom in image, without fancybox.
-  registerZoomImage: function () {
-    $('#content-wrap img')
-      .not(':hidden')
-      .each(function () {
-        if ($(this).attr('data-zoom') === 'none') return
-        $(this).addClass('zoomimg')
-      })
+    },
 
-    var $imgMask = $('<div class="zoomimg-mask"></div>')
-    var $imgClone = null
-    var isZoom = false
+    // set how long ago language
+    setHowLongAgoLanguage(p1, p2) {
+      return p2.replace(/%s/g, p1);
+    },
+    
 
-    $(window).on('scroll', closeZoom)
-    $(document).on('click', closeZoom)
+    getHowLongAgo(timestamp) {
+      const l = Global.language_ago;
 
-    $('.zoomimg').on('click', function (e) {
-      e.stopPropagation()
-      if (isZoom) {
-        closeZoom()
-        return
+      const __Y = Math.floor(timestamp / (60 * 60 * 24 * 30) / 12);
+      const __M = Math.floor(timestamp / (60 * 60 * 24 * 30));
+      const __W = Math.floor(timestamp / (60 * 60 * 24) / 7);
+      const __d = Math.floor(timestamp / (60 * 60 * 24));
+      const __h = Math.floor((timestamp / (60 * 60)) % 24);
+      const __m = Math.floor((timestamp / 60) % 60);
+      const __s = Math.floor(timestamp % 60);
+
+      if (__Y > 0) {
+        return this.setHowLongAgoLanguage(__Y, l.year);
+      } else if (__M > 0) {
+        return this.setHowLongAgoLanguage(__M, l.month);
+      } else if (__W > 0) {
+        return this.setHowLongAgoLanguage(__W, l.week);
+      } else if (__d > 0) {
+        return this.setHowLongAgoLanguage(__d, l.day);
+      } else if (__h > 0) {
+        return this.setHowLongAgoLanguage(__h, l.hour);
+      } else if (__m > 0) {
+        return this.setHowLongAgoLanguage(__m, l.minute);
+      } else if (__s > 0) {
+        return this.setHowLongAgoLanguage(__s, l.second);
       }
-      isZoom = true
-      $imgClone = $(this)
-        .clone()
-        .addClass('zoomimg-clone')
+    },
 
-      var SIDE_GAP = parseInt(CONFIG.zoomImage.gapAside || 20)
-      var imgRect = this.getBoundingClientRect()
-      var imgOuterW = $(this).outerWidth()
-      var imgOuterH = $(this).outerHeight()
-      var imgW = $(this).width()
-      var imgH = $(this).height()
-      var imgL = $(this).offset().left + (imgOuterW - imgW) / 2
-      var imgT = $(this).offset().top + (imgOuterH - imgH) / 2
-      var winW = $(window).width() - SIDE_GAP * 2
-      var winH = $(window).height() - SIDE_GAP * 2
-      var scaleX = winW / imgW
-      var scaleY = winH / imgH
-      var scale = (scaleX < scaleY ? scaleX : scaleY) || 1
-      var translateX = winW / 2 - (imgRect.x + imgOuterW / 2) + SIDE_GAP
-      var translateY = winH / 2 - (imgRect.y + imgOuterH / 2) + SIDE_GAP
+    relativeTimeInHome() {
+      const post = document.querySelectorAll(
+        ".home-article-meta-info .home-article-date"
+      );
+      const df = Global.theme_config.home.article_date_format;
+      if (df === "relative") {
+        post &&
+          post.forEach((v) => {
+            const nowDate = Date.now();
+            const postDate = new Date(v.dataset.date.split(" GMT")[0]).getTime();
+            v.innerHTML = this.getHowLongAgo(
+              Math.floor((nowDate - postDate) / 1000)
+            );
+          });
+      } else if (df === "auto") {
+        post &&
+        post.forEach((v) => {
+          const nowDate = Date.now();
+          const postDate = new Date(v.dataset.date.split(" GMT")[0]).getTime();
+          const finalDays = Math.floor(
+            (nowDate - postDate) / (60 * 60 * 24 * 1000)
+          );
+          if (finalDays < 7) {
+            v.innerHTML = this.getHowLongAgo(
+              Math.floor((nowDate - postDate) / 1000)
+            );
+          }
+        });
+      }
+    },
 
-      $(this).addClass('zoomimg--hide')
-      $('body')
-        .append($imgMask)
-        .append($imgClone)
-      $imgMask.velocity({
-        opacity: 1
-      })
-      $imgClone.css({
-        left: imgL,
-        top: imgT,
-        width: imgW,
-        height: imgH
-      })
-      $imgClone.velocity(
-        {
-          translateX: translateX,
-          translateY: translateY,
-          scale: scale
-        },
-        { duration: 300 }
-      )
-    })
-
-    function closeZoom () {
-      if (!isZoom) {
-        return
+    // loading progress bar start
+    pjaxProgressBarStart() {
+      this.pjaxProgressBarTimer && clearInterval(this.pjaxProgressBarTimer);
+      if (this.isHasScrollProgressBar) {
+        this.scrollProgressBar_dom.classList.add("hide");
       }
 
-      isZoom = false
-      $imgClone.velocity('reverse')
-      $imgMask.velocity('reverse', {
-        complete: function () {
-          $imgMask.remove()
-          $imgClone.remove()
-          $('.zoomimg').removeClass('zoomimg--hide')
-        }
-      })
-    }
-  },
-  /**
-   * Add the header to code block.
-   * @param {string} type The type of header. value: 'carbon' | null.
-   */
-  addCodeHeader: function (type) {
-    $('figure.highlight').each(function () {
-      if (!$(this).find('figcaption')[0]) {
-        var content = ''
-        if (!type) {
-          var CODEBLOCK_CLASS_NAME = 'highlight'
-          var lang = $(this)
-            .attr('class')
-            .split(/\s/)
-            .filter(function (e) {
-              return e !== CODEBLOCK_CLASS_NAME
-            })
+      this.pjaxProgressBar_dom.style.width = "0";
+      this.pjaxProgressIcon_dom.classList.add("show");
 
-          content += `<div class="custom-lang">${lang}</div>`
-        } else if (type === 'carbon') {
-          content += `
-            <div class="custom-carbon">
-              <div class="custom-carbon-dot custom-carbon-dot--red"></div>
-              <div class="custom-carbon-dot custom-carbon-dot--yellow"></div>
-              <div class="custom-carbon-dot custom-carbon-dot--green"></div>
-            </div>
-          `
+      let width = 1;
+      const maxWidth = 99;
+
+      this.pjaxProgressBar_dom.classList.add("show");
+      this.pjaxProgressBar_dom.style.width = width + "%";
+
+      this.pjaxProgressBarTimer = setInterval(() => {
+        width += 5;
+        if (width > maxWidth) width = maxWidth;
+        this.pjaxProgressBar_dom.style.width = width + "%";
+      }, 100);
+    },
+
+    // loading progress bar end
+    pjaxProgressBarEnd() {
+      this.pjaxProgressBarTimer && clearInterval(this.pjaxProgressBarTimer);
+      this.pjaxProgressBar_dom.style.width = "100%";
+
+      const temp_1 = setTimeout(() => {
+        this.pjaxProgressBar_dom.classList.remove("show");
+        this.pjaxProgressIcon_dom.classList.remove("show");
+
+        if (this.isHasScrollProgressBar) {
+          this.scrollProgressBar_dom.classList.remove("hide");
         }
 
-        $(`<figcaption class="custom">${content}</figcaption>`).insertBefore(
-          $(this)
-            .children()
-            .first()
-        )
+        const temp_2 = setTimeout(() => {
+          this.pjaxProgressBar_dom.style.width = "0";
+          clearTimeout(temp_1), clearTimeout(temp_2);
+        }, 200);
+      }, 200);
+    },
+
+
+
+    /*
+    calculateMaterialColors(hex) {
+      // Convert hex to RGB
+      hex = hex.replace(/#/g, "");
+      if (hex.length === 3) {
+        hex = hex
+          .split("")
+          .map(function (hex) {
+            return hex + hex;
+          })
+          .join("");
       }
-    })
-  },
-  addCopyButton: function (type) {
-    var btnContainer = '.post-copyright,'
-    var $copyIcon = $(
-      `<div class="copy-button" data-popover="${CONFIG.prompt.copyButton}" data-popover-pos="up">` +
-        `<i class="${CONFIG.fontIcon.copyBtn}"></i>` +
-        '</div>'
-    )
-
-    if (type === 'simple' || type === 'carbon') {
-      btnContainer += '.highlight figcaption:not(".custom")'
-    } else {
-      btnContainer += '.highlight figcaption'
-    }
-    // Add a copy button to the selected elements.
-    $(btnContainer).append($copyIcon)
-  },
-  registerCopyEvent: function () {
-    $('.copy-button').on('click', function () {
-      var container = null
-      // Select the container of code block.
-      var codeContainer = $(this)
-        .parents('figure.highlight')
-        .find('td.code')[0]
-
-      if (codeContainer) {
-        container = codeContainer
+      var result = /^([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})[\da-z]{0,0}$/i.exec(
+        hex
+      );
+      if (!result) {
+        return null;
+      }
+      var r = parseInt(result[1], 16);
+      var g = parseInt(result[2], 16);
+      var b = parseInt(result[3], 16);
+      (r /= 255), (g /= 255), (b /= 255);
+      var max = Math.max(r, g, b),
+        min = Math.min(r, g, b);
+      var h,
+        s,
+        l = (max + min) / 2;
+      if (max == min) {
+        h = s = 0;
       } else {
-        // Select the container of text.
-        container = $(this).parent()[0]
+        var d = max - min;
+        s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+        switch (max) {
+          case r:
+            h = (g - b) / d + (g < b ? 6 : 0);
+            break;
+          case g:
+            h = (b - r) / d + 2;
+            break;
+          case b:
+            h = (r - g) / d + 4;
+            break;
+        }
+        h /= 6;
       }
-      if (Stun.utils.copyText(container)) {
-        Stun.utils.popAlert('success', CONFIG.prompt.copySuccess)
-      } else {
-        Stun.utils.popAlert('error', CONFIG.prompt.copyError)
-      }
-    })
-  },
-  /**
-   * Wait for all images to load.
-   * @param {String} selector jQuery selector.
-   * @param {Function} callback Callback.
-   */
-  waitAllImageLoad: function (selector, callback) {
-    var imgDefereds = []
-    $(selector).each(function () {
-      var dfd = $.Deferred()
-      $(this).bind('load', function () {
-        dfd.resolve()
-      })
+      s = s * 100;
+      s = Math.round(s);
+      l = l * 100;
+      l = Math.round(l);
+      h = Math.round(360 * h);
 
-      if (this.complete) {
-        setTimeout(function () {
-          dfd.resolve()
-        }, 500)
-      }
-      imgDefereds.push(dfd)
-    })
-    $.when.apply(null, imgDefereds).then(callback)
-  }
-}
+      // Compute primary, secondary, and tertiary colors
+      const primaryColor = `hsl(${h}, ${s}%, ${l}%)`;
+      const secondaryColor = `hsl(${h}, ${s - 15}%, ${l - 15}%)`;
+      const tertiaryColor = `hsl(${h}, ${s - 25}%, ${l - 25}%)`;
+      document.documentElement.style.setProperty('--primary-color-temp', primaryColor);
+      document.documentElement.style.setProperty('--secondary-color-temp', secondaryColor);
+      document.documentElement.style.setProperty('--tertiary-color-temp', tertiaryColor);
+    },*/
+  };
+
+  // init scroll
+  Global.utils.registerWindowScroll();
+
+  // toggle show tools list
+  Global.utils.toggleToolsList();
+
+  // global font adjust
+  Global.utils.globalFontSizeAdjust();
+
+  // adjust content area width
+  Global.utils.contentAreaWidthAdjust();
+
+  // go comment
+  Global.utils.goComment();
+
+  // init page height handle
+  Global.utils.initPageHeightHandle();
+
+  // init first screen height
+  Global.utils.inithomeBannerHeight();
+
+  // big image viewer handle
+  Global.utils.imageViewer();
+
+  // set how long ago in home article block
+  Global.utils.relativeTimeInHome();
+
+  // calculate material colors
+  //Global.utils.calculateMaterialColors(Global.theme_config.colors.primary);
+};

